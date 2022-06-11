@@ -66,11 +66,18 @@ Route::get('/aluno/matricula/{matricula}', function ($matricula) {
         2 => "2-Jonathan",
         3 => "3-Karine",
         4 => "4-Laura",
-        5 =>"5-Lisa"
+        5 => "5-Lisa"
     );
 
     $alunos = "<ul>";
-    $alunos .= $dados[$matricula];
+
+    if($matricula >=count($dados)){
+        $alunos = $alunos."<h2>NÃO ENCONTRADO!</h2>"; 
+    }
+    else{
+        $alunos .= $dados[$matricula];
+    }
+   
     $alunos .= "</ul>";
 
    
