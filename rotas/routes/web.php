@@ -71,7 +71,7 @@ Route::get('/aluno/matricula/{matricula}', function ($matricula) {
 
     $alunos = "<ul>";
 
-    if($matricula >=count($dados)){
+    if($matricula >count($dados)){
         $alunos = $alunos."<h2>NÃO ENCONTRADO!</h2>"; 
     }
     else{
@@ -80,8 +80,26 @@ Route::get('/aluno/matricula/{matricula}', function ($matricula) {
    
     $alunos .= "</ul>";
 
-   
+    return $alunos;
+});
 
+Route::get('/aluno/nome/{nome}', function ($nome) {
+   
+    $dados = array(
+        "Karoline",
+        "Jonathan",
+        "Karine",
+        "Laura",
+        "Lisa"
+    );
+
+    $alunos = "<ul>";
+
+    $alunos .= array_search("$nome",$dados);
+    
+
+    $alunos .= "</ul>";
+   
     return $alunos;
 });
 
