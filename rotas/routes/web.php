@@ -93,13 +93,20 @@ Route::get('/aluno/nome/{nome}', function ($nome) {
         "Lisa"
     );
 
-    $alunos = "<ul>";
+    $aluno2 = "<ul>";
 
-    $alunos .= array_search("$nome",$dados);
-    
-
-    $alunos .= "</ul>";
+    $alunos = array_search("$nome",$dados);
+    if($alunos>=count($dados) && $alunos<=count($dados)){
+        $aluno1 = $alunos;
+        $aluno2 = "<li>".$dados[$aluno1]."</li>";
+    }
+    else{
+        $aluno2 = $alunos."<h2>NÃO ENCONTRADO!</h2>";   
+    }
    
-    return $alunos;
+
+    $aluno2 .= "</ul>";
+   
+    return $aluno2;
 });
 
