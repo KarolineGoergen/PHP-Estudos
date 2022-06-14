@@ -57,7 +57,7 @@ Route::get('/aluno/limite/{limite}', function ($limite) {
 
     $alunos .= "</ul>";
     return $alunos;
-});
+})->name('aluno.limite');
 
 Route::get('/aluno/matricula/{matricula}', function ($matricula) {
    
@@ -81,7 +81,7 @@ Route::get('/aluno/matricula/{matricula}', function ($matricula) {
     $alunos .= "</ul>";
 
     return $alunos;
-});
+})->name('aluno.matricula');
 
 Route::get('/aluno/nome/{nome}', function ($nome) {
    
@@ -101,12 +101,78 @@ Route::get('/aluno/nome/{nome}', function ($nome) {
         if($aluno1 <= 0){
             $aluno2 = "<h2>NÃO ENCONTRADO!</h2>";
         }
-        else if(strcmp($aluno2,$nome)){
+        else {
             $aluno2 = "<li>".$dados[$aluno1]."</li>";
         }
         
     $aluno2 .= "</ul>";
    
     return $aluno2;
-});
+})->name('aluno.nome');
 
+Route::get('/nota', function () {
+
+    $dados = array(
+        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 8),
+        array('matricula'=> 2, 'nome'=> "Jonathan", "nota"=> 10),
+        array('matricula'=> 3, 'nome'=> "Karine", "nota"=> 9),
+        array('matricula'=> 4, 'nome'=> "Laura", "nota"=> 7),
+        array('matricula'=> 5, 'nome'=> "Lisa", "nota"=> 6),
+    );
+
+    foreach ($dados as $key => $values) {
+        $tabela = "<tr>";
+         foreach ($dados[$key] as $cedula){
+            $tabela .= "<td>".var_export($cedula)."</td>";
+         };
+         $tabela .= "</tr>";
+
+     }
+    return $tabela;
+})->name('nota');
+
+Route::get('/nota/limite/{limite}', function ($limite) {
+
+    $dados = array(
+        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 8),
+        array('matricula'=> 2, 'nome'=> "Jonathan", "nota"=> 10),
+        array('matricula'=> 3, 'nome'=> "Karine", "nota"=> 9),
+        array('matricula'=> 4, 'nome'=> "Laura", "nota"=> 7),
+        array('matricula'=> 5, 'nome'=> "Lisa", "nota"=> 6),
+    );
+
+    foreach ($dados as $key => $values) {
+        $tabela = "<tr>";
+        
+         foreach ($dados[$key] as $cedula){
+            if($key < $limite){
+                $tabela .= "<td>".var_export($cedula)."</td>";
+            }
+            
+         };
+         $tabela .= "</tr>";
+
+     }
+    return $tabela;
+})->name('nota.limite');
+
+Route::get('/nota/lancar/{nota}/{matricula}/{nome}', function ($nota,$matricula,$nome) {
+
+    $dados = array(
+        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 8),
+        array('matricula'=> 2, 'nome'=> "Jonathan", "nota"=> 10),
+        array('matricula'=> 3, 'nome'=> "Karine", "nota"=> 9),
+        array('matricula'=> 4, 'nome'=> "Laura", "nota"=> 7),
+        array('matricula'=> 5, 'nome'=> "Lisa", "nota"=> 6),
+    );
+
+    foreach ($dados as $key => $values) {
+        $tabela = "<tr>";
+         foreach ($dados[$key] as $cedula){
+            $tabela .= "<td>".var_export($cedula)."</td>";
+         };
+         $tabela .= "</tr>";
+
+     }
+    return $tabela;
+})->name('nota.lancar');
