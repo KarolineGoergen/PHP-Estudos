@@ -86,25 +86,25 @@ Route::get('/aluno/matricula/{matricula}', function ($matricula) {
 Route::get('/aluno/nome/{nome}', function ($nome) {
    
     $dados = array(
-        "Karoline",
-        "Jonathan",
-        "Karine",
-        "Laura",
-        "Lisa"
+        1 => "Karoline",
+        2 => "Jonathan",
+        3 => "Karine",
+        4 => "Laura",
+        5 => "Lisa"
     );
 
     $aluno2 = "<ul>";
 
     $alunos = array_search("$nome",$dados);
-    if($alunos>=count($dados) && $alunos<=count($dados)){
-        $aluno1 = $alunos;
-        $aluno2 = "<li>".$dados[$aluno1]."</li>";
-    }
-    else{
-        $aluno2 = $alunos."<h2>NÃO ENCONTRADO!</h2>";   
-    }
-   
 
+        $aluno1 = $alunos;
+        if($aluno1 <= 0){
+            $aluno2 = "<h2>NÃO ENCONTRADO!</h2>";
+        }
+        else if(strcmp($aluno2,$nome)){
+            $aluno2 = "<li>".$dados[$aluno1]."</li>";
+        }
+        
     $aluno2 .= "</ul>";
    
     return $aluno2;
