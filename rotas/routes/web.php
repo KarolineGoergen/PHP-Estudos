@@ -160,23 +160,4 @@ Route::get('/nota/limite/{limite}', function ($limite) {
     return $tabela;
 })->name('nota.limite');
 
-Route::get('/nota/lancar/{nota}/{matricula}/{nome}', function ($nota,$matricula,$nome) {
 
-    $dados = array(
-        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 8),
-        array('matricula'=> 2, 'nome'=> "Jonathan", "nota"=> 10),
-        array('matricula'=> 3, 'nome'=> "Karine", "nota"=> 9),
-        array('matricula'=> 4, 'nome'=> "Laura", "nota"=> 7),
-        array('matricula'=> 5, 'nome'=> "Lisa", "nota"=> 6),
-    );
-
-    foreach ($dados as $key => $values) {
-        $tabela = "<tr>";
-         foreach ($dados[$key] as $cedula){
-            $tabela .= "<td>".var_export($cedula)."</td>";
-         };
-         $tabela .= "</tr>";
-
-     }
-    return $tabela;
-})->name('nota.lancar');
