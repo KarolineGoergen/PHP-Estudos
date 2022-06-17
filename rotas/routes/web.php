@@ -209,9 +209,6 @@ Route::get('nota/lancar/{nota}/{matricula}/{nome?}', function($nota, $matricula,
 
         $dados[$indice] = $alterado;
 
-    } else {
-       
-        echo "<h2>NÃO ENCONTRADO!</h2>";
     }
 
     }
@@ -234,58 +231,27 @@ Route::get('nota/conceito/{A}/{B}/{C}', function($a, $b, $c) {
     $tabela = "<table><tr><td><Strong>Matrícula&emsp;</Strong></td><td><Strong>Aluno&emsp;</Strong></td><td><Strong>Nota</Strong></td></tr>";
 
     $dados = array(
-        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 8),
+        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 6),
         array('matricula'=> 2, 'nome'=> "Jonathan", "nota"=> 10),
         array('matricula'=> 3, 'nome'=> "Karine", "nota"=> 9),
         array('matricula'=> 4, 'nome'=> "Laura", "nota"=> 7),
-        array('matricula'=> 5, 'nome'=> "Lisa", "nota"=> 6),
+        array('matricula'=> 5, 'nome'=> "Lisa", "nota"=> 4),
     );
 
-    $aux = $dados;
-
-    $indiceA = array_search($a, array_column($aux, 'nota'));
-    $indiceB = array_search($b, array_column($aux, 'nota'));
-    $indiceC = array_search($c, array_column($aux, 'nota'));
-
-    if($dados[$indiceA] >= 9){
-
-        $alterado = [
-            'matricula' => $dados[$indiceA]['matricula'],
-            'nome' => $dados[$indiceA]['nome'],
-            'nota' => "A"
-        ];
-        
-
-        $dados[$indiceA] = $alterado;
-
-    }
-    if($dados[$indiceB] >= 7){
-
-        $alterado = [
-            'matricula' => $dados[$indiceB]['matricula'],
-            'nome' => $dados[$indiceB]['nome'],
-            'nota' => "B"
-        ];
-        
-
-        $dados[$indiceB] = $alterado;
-    }
-    if($dados[$indiceC] >= 6){
-
-        $alterado = [
-            'matricula' => $dados[$indiceC]['matricula'],
-            'nome' => $dados[$indiceC]['nome'],
-            'nota' => "C"
-        ];
-        
-
-        $dados[$indiceC] = $alterado;
-
-    }
  
-
     foreach($dados as $aluno) {
-        $tabela .= "<tr>";
+        if($aluno["nota"] >= 8){
+            $aluno["nota"] = "A";
+        }
+        else if($aluno["nota"] == 7){
+            $aluno["nota"] = "B";
+        }
+        else if($aluno["nota"] == 6){
+            $aluno["nota"] = "C";
+        }
+        else if($aluno["nota"] < 5){
+            $aluno["nota"] = "D";
+        }
         foreach ($aluno as $key => $value) {
             $tabela .= "<td>$value</td>";
         }
