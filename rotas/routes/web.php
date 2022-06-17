@@ -231,7 +231,7 @@ Route::get('nota/conceito/{A}/{B}/{C}', function($a, $b, $c) {
     $tabela = "<table><tr><td><Strong>Matrícula&emsp;</Strong></td><td><Strong>Aluno&emsp;</Strong></td><td><Strong>Nota</Strong></td></tr>";
 
     $dados = array(
-        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 6),
+        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 8),
         array('matricula'=> 2, 'nome'=> "Jonathan", "nota"=> 10),
         array('matricula'=> 3, 'nome'=> "Karine", "nota"=> 9),
         array('matricula'=> 4, 'nome'=> "Laura", "nota"=> 7),
@@ -240,16 +240,16 @@ Route::get('nota/conceito/{A}/{B}/{C}', function($a, $b, $c) {
 
  
     foreach($dados as $aluno) {
-        if($aluno["nota"] >= 8){
+        if($aluno["nota"] >= $a){
             $aluno["nota"] = "A";
         }
-        else if($aluno["nota"] == 7){
+        else if($aluno["nota"] >= $b){
             $aluno["nota"] = "B";
         }
-        else if($aluno["nota"] == 6){
+        else if($aluno["nota"] >= $c){
             $aluno["nota"] = "C";
         }
-        else if($aluno["nota"] < 5){
+        else if($aluno["nota"] < $c){
             $aluno["nota"] = "D";
         }
         foreach ($aluno as $key => $value) {
