@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +58,7 @@ Route::get('/aluno/limite/{limite}', function ($limite) {
 
     $alunos .= "</ul>";
     return $alunos;
-})->name('aluno.limite');
+})->name('aluno.limite')->where('limite', '[0-9]+');
 
 Route::get('/aluno/matricula/{matricula}', function ($matricula) {
    
@@ -81,7 +82,7 @@ Route::get('/aluno/matricula/{matricula}', function ($matricula) {
     $alunos .= "</ul>";
 
     return $alunos;
-})->name('aluno.matricula');
+})->name('aluno.matricula')->where('matricula', '[0-9]+');
 
 Route::get('/aluno/nome/{nome}', function ($nome) {
    
@@ -108,7 +109,7 @@ Route::get('/aluno/nome/{nome}', function ($nome) {
     $aluno2 .= "</ul>";
    
     return $aluno2;
-})->name('aluno.nome');
+})->name('aluno.nome')->where('nome', '[A-Za-z]+');
 
 Route::get('/nota', function () {
 
@@ -162,15 +163,17 @@ Route::get('/nota/limite/{limite}', function ($limite) {
             $tabela .= "</tr>";
         }
     }
-  
+    else{
+        $tabela = "<h2>LIMITE MÁXIMO!</h2>";
+    }
 
     $tabela .= "</ul></table>";
     return $tabela;
-})->name('nota.limite');
+})->name('nota.limite')->where('limite', '[0-9]+');
 
 Route::get('nota/lancar/{nota}/{matricula}/{nome?}', function($nota, $matricula, $nome=null) {
 
-    $tabela = "<table><tr><td><Strong>Matrícula&emsp;</Strong></td><td><Strong>Aluno&emsp;</Strong></td><td><Strong>Nota</Strong></td></tr>";
+    $tabela = "";
 
     $dados = array(
         array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 8),
@@ -180,41 +183,100 @@ Route::get('nota/lancar/{nota}/{matricula}/{nome?}', function($nota, $matricula,
         array('matricula'=> 5, 'nome'=> "Lisa", "nota"=> 6),
     );
 
-    $aux = $dados;
+        $aux = $dados;
+        $flag = true;
 
-    if($nome == null) {
+        if($nome == null) {
 
-    $indice = array_search($matricula, array_column($aux, 'matricula'));
+            $indice = array_search($matricula, array_column($aux, 'matricula'));
 
-    $alterado = [
-        'matricula' => $matricula,
-        'nome' => $dados[$indice]['nome'],
-        'nota' => $nota
-    ];
+            if($indice != 0) {
 
-    $dados[$indice] = $alterado;
+                $alterado = [
+                    'matricula' => $matricula,
+                    'nome' => $dados[$indice]['nome'],
+                    'nota' => $nota
+                ];
+                
+                $dados[$indice] = $alterado;
 
-    }else {
+            }
+            else {
+                echo "<h2>MATRÍCULA NÃO EXISTE!</h2>";
+                $flag = false;
+            }
 
-        $indice = array_search($nome, array_column($aux, 'nome'));
-        $indiceM = array_search($matricula, array_column($aux, 'matricula'));
+        }
+        else {
 
-        if($indiceM != null) {
-        
-        $alterado = [
-            'matricula' => $matricula,
-            'nome' => $nome,
-            'nota' => $nota
-        ];
+            $indice = array_search($nome, array_column($aux, 'nome'));
 
-        $dados[$indice] = $alterado;
+            if($indice != 0) {
 
-    }
+            $alterado = [
+                'matricula' => $dados[$indice]['matricula'],
+                'nome' => $dados[$indice]['nome'],
+                'nota' => $nota
+            ];
 
-    }
+                $dados[$indice] = $alterado;
 
+            } 
+            else {
+                echo "<h2>NOME NÃO EXISTE!</h2>";
+                $flag = false;
+            }
+
+        }
+
+        if($flag == true) {
+
+        $tabela = "<table><tr><td><Strong>Matrícula&emsp;</Strong></td><td><Strong>Aluno&emsp;</Strong></td><td><Strong>Nota</Strong></td></tr>";
+
+        foreach($dados as $aluno) {
+            $tabela .= "<tr>";
+            foreach ($aluno as $key => $value) {
+                $tabela .= "<td>$value</td>";
+            }
+            $tabela .= "</tr>";
+        }
+
+        }
+
+        $tabela .= "</ul></table>";
+        return $tabela;
+
+    $tabela .= "</ul></table>";
+    return $tabela;
+
+})->name('nota.lancar')->where('nota', '[0-9]+')->where('matricula', '[0-9]+')->where('nome', '[A-Za-z]+');
+
+Route::get('nota/conceito/{A}/{B}/{C}', function($a, $b, $c) {
+
+    $tabela = "<table><tr><td><Strong>Matrícula&emsp;</Strong></td><td><Strong>Aluno&emsp;</Strong></td><td><Strong>Nota</Strong></td></tr>";
+
+    $dados = array(
+        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 9),
+        array('matricula'=> 2, 'nome'=> "Jonathan", "nota"=> 2),
+        array('matricula'=> 3, 'nome'=> "Karine", "nota"=> 10),
+        array('matricula'=> 4, 'nome'=> "Laura", "nota"=> 6),
+        array('matricula'=> 5, 'nome'=> "Lisa", "nota"=> 4),
+    );
+
+ 
     foreach($dados as $aluno) {
-        $tabela .= "<tr>";
+        if($aluno["nota"] >= $a){
+            $aluno["nota"] = "A";
+        }
+        else if($aluno["nota"] >= $b){
+            $aluno["nota"] = "B";
+        }
+        else if($aluno["nota"] >= $c){
+            $aluno["nota"] = "C";
+        }
+        else if($aluno["nota"] < $c){
+            $aluno["nota"] = "D";
+        }
         foreach ($aluno as $key => $value) {
             $tabela .= "<td>$value</td>";
         }
@@ -224,21 +286,24 @@ Route::get('nota/lancar/{nota}/{matricula}/{nome?}', function($nota, $matricula,
     $tabela .= "</ul></table>";
     return $tabela;
 
-})->name('nota.lancar');
+})->name('nota.conceito')->where('A', '[0-9]+')->where('B', '[0-9]+')->where('C', '[0-9]+');
 
-Route::get('nota/conceito/{A}/{B}/{C}', function($a, $b, $c) {
-
+Route::post('nota/conceito', function(Request $request) {
+ 
     $tabela = "<table><tr><td><Strong>Matrícula&emsp;</Strong></td><td><Strong>Aluno&emsp;</Strong></td><td><Strong>Nota</Strong></td></tr>";
 
     $dados = array(
-        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 8),
-        array('matricula'=> 2, 'nome'=> "Jonathan", "nota"=> 10),
-        array('matricula'=> 3, 'nome'=> "Karine", "nota"=> 9),
-        array('matricula'=> 4, 'nome'=> "Laura", "nota"=> 7),
+        array('matricula'=> 1, 'nome'=> "Karoline", "nota"=> 9),
+        array('matricula'=> 2, 'nome'=> "Jonathan", "nota"=> 2),
+        array('matricula'=> 3, 'nome'=> "Karine", "nota"=> 10),
+        array('matricula'=> 4, 'nome'=> "Laura", "nota"=> 6),
         array('matricula'=> 5, 'nome'=> "Lisa", "nota"=> 4),
     );
 
- 
+    $a = $request -> A;
+    $b = $request -> B;
+    $c = $request -> C;
+
     foreach($dados as $aluno) {
         if($aluno["nota"] >= $a){
             $aluno["nota"] = "A";
