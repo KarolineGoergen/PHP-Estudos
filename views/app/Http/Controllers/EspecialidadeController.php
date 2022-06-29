@@ -6,14 +6,15 @@ use Illuminate\Http\Request;
 
 class EspecialidadeController extends Controller
 {
-    /**
+        /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $dados = Especialidade::all();
+        return view('especialidades.index', compact('dados'));
     }
 
     /**
@@ -23,7 +24,7 @@ class EspecialidadeController extends Controller
      */
     public function create()
     {
-        //
+        return view('especialidades.create');
     }
 
     /**
@@ -34,7 +35,12 @@ class EspecialidadeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Endereco::create([
+            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
+            'descricao' => mb_strtoupper($descricao->rua, 'UTF-8'),
+        ]);
+        
+        return redirect()->route('especialidades.index');
     }
 
     /**
@@ -56,7 +62,11 @@ class EspecialidadeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $dados = Especialidade::find($id);
+
+        if(!isset($dados)) { return "<h1>ID: $id não encontrado!</h1>"; }
+
+        return view('especialidades.edit', compact('dados'));
     }
 
     /**
@@ -68,7 +78,18 @@ class EspecialidadeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $obj = Especialidade::find($id);
+
+        if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
+
+        $obj->fill([
+            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
+            'descricao' => mb_strtoupper($descricao->rua, 'UTF-8'),
+        ]);
+
+        $obj->save();
+
+        return redirect()->route('especialidades.index');
     }
 
     /**
@@ -79,6 +100,12 @@ class EspecialidadeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $obj = Especialidade::find($id);
+
+        if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
+
+        $obj->destroy();
+
+        return redirect()->route('especialidades.index');
     }
 }
