@@ -37,7 +37,7 @@ class EspecialidadeController extends Controller
     {
         Endereco::create([
             'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-            'descricao' => mb_strtoupper($descricao->rua, 'UTF-8'),
+            'descricao' => mb_strtoupper($request->descricao, 'UTF-8'),
         ]);
         
         return redirect()->route('especialidades.index');
