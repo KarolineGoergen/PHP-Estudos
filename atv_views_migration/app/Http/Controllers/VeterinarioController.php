@@ -24,7 +24,8 @@ class VeterinarioController extends Controller
      */
     public function create()
     {
-        return view('veterinarios.create');
+        $esp = Especialidade::all();
+        return view('veterinarios.create', compact('esp'));
     }
 
     /**
