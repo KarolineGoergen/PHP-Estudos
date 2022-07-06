@@ -11,5 +11,5 @@ class Especialidade extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillabel = ['nome', 'descricao'];
+    protected $fillable = ['nome','descricao'];
 }

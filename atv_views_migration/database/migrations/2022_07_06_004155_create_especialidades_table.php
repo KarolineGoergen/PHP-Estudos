@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Veterinarios extends Migration
+class CreateEspecialidadesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class Veterinarios extends Migration
      */
     public function up()
     {
-        Schema::create('veterinarios', function (Blueprint $table) {
+        Schema::create('especialidades', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->integer('crmv');
-            $table->unsignedBigInteger('especialidade_id')->references('id')->on('especialidades');
+            $table->text('descricao');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -30,6 +29,6 @@ class Veterinarios extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('veterinarios');
+        Schema::dropIfExists('especialidades');
     }
 }

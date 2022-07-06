@@ -37,19 +37,19 @@
         </div>
     </div>
     <div class="row">
-        <div class="col" >
-            <div class="form-floating mb-3">
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    name="especialidade" 
-                    placeholder="Especialidade"
-                    value="{{$dados['especialidade']}}"
-                />
-                <label for="especialidade">Especialidade</label>
+            <div class="col">
+                <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01" >Especialidade</label>
+                    <select name="id_especialidade" class="form-select">
+                        @foreach ($esp as $item)
+                        <option value="{{$item->id}}" @if($item->id == old('id_especialidade')) selected="true" @endif>
+                            {{ $item->nome }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
-    </div>
     <div class="row">
         <div class="col">
             <a href="{{route('veterinarios.index')}}" class="btn btn-secondary btn-block align-content-center">

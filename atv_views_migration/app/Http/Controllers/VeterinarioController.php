@@ -3,110 +3,75 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Veterinario;
+use App\Models\Especialidade;
 
-class VeterinarioController extends Controller
-{
-     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $dados = Veterinarios::all();
+class VeterinarioController extends Controller {
+
+    public function index() {
+
+        $dados[0] = Veterinario::all();
+        $dados[1] = Especialidade::all();
+
         return view('veterinarios.index', compact('dados'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+    public function create() {
+
         $esp = Especialidade::all();
         return view('veterinarios.create', compact('esp'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        Veterinarios::create([
+   public function store(Request $request) {
+
+        Veterinario::create([
             'crmv' => $request->crmv,
-            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
-            
+            'nome' => $request->nome,
+            'id_especialidade' => $request->id_especialidade,
         ]);
-        return $this->hasOne(Especialidade::class, 'id', 'especialidade_id');
+
         return redirect()->route('veterinarios.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public function show($id) {
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $dados = Veterinarios::find($id);
+    public function edit($id) {
 
-        if(!isset($dados)) { return "<h1>ID: $id não encontrado!</h1>"; }
+        $dados = Veterinario::find($id);
+        $esp = Especialidade::all();
 
-        return view('veterinarios.edit', compact('dados'));
+        if(!isset($dados)) { 
+            return "<h1>ID: $id não encontrado!</h1>"; 
+        }     
+
+        return view('veterinarios.edit', compact('dados','esp'));        
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $obj = Veterinarios::find($id);
+    public function update(Request $request, $id) {
 
-        if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
+        $obj = Veterinario::find($id);
+
+        if(!isset($obj)) { 
+            return "<h1>ID: $id não encontrado!"; 
+        }
 
         $obj->fill([
             'crmv' => $request->crmv,
-            'nome' => mb_strtoupper($request->nome, 'UTF-8'),
+            'nome' => $request->nome,
+            'id_especialidade' => $request->id_especialidade,
         ]);
 
         $obj->save();
-        
+
         return redirect()->route('veterinarios.index');
+        
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $obj = Veterinarios::find($id);
+    public function destroy($id) {
 
-        if(!isset($obj)) { return "<h1>ID: $id não encontrado!"; }
-
-        $obj->destroy();
+        Veterinario::destroy($id);
 
         return redirect()->route('veterinarios.index');
     }
