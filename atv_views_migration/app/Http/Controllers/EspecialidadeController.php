@@ -19,6 +19,21 @@ class EspecialidadeController extends Controller {
 
    public function store(Request $request) {
 
+    $regras = [
+        'nome' => 'required|max:100|min:10',
+        'descricao' => 'required|max:250|min:20',
+
+    ];
+
+    $msg = [
+        "required" => "O campo [:attribute] é obrigatório",
+        "min" => "O [:attribute] deve conter no mínimo [:min]",
+        "max" => "O [:attribute] deve conter no máximo [:max]",
+    
+        
+    ];
+    $request->validate($regras, $msg);
+
         Especialidade::create([
             'nome' => $request->nome,
             'descricao' => $request->descricao,

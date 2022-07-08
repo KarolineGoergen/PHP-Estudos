@@ -24,6 +24,23 @@ class VeterinarioController extends Controller {
 
    public function store(Request $request) {
 
+    $regras = [
+        'crmv' => 'required|max:10|min:5|unique:veterinarios',
+        'nome' => 'required|max:100|min:10',
+        'especialidade' => 'required',
+
+    ];
+
+    $msg = [
+        "required" => "O campo [:attribute] é obrigatório",
+        "min" => "O [:attribute] deve conter no mínimo [:min]",
+        "max" => "O [:attribute] deve conter no máximo [:max]",
+        "unique" => "O [:attribute] já existe!",
+        
+    ];
+
+    $request->validate($regras, $msg);
+
         Veterinario::create([
             'crmv' => $request->crmv,
             'nome' => $request->nome,
