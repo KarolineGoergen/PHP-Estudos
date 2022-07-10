@@ -66,6 +66,21 @@ class ClienteController extends Controller {
             return "<h1>ID: $id não encontrado!"; 
         }
 
+        $regras = [
+            'nome' => 'required|max:100|min:10',
+            'email' => 'required|max:150|min:15',
+    
+        ];
+    
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+            "min" => "O [:attribute] deve conter no mínimo [:min]",
+            "max" => "O [:attribute] deve conter no máximo [:max]",
+            
+        ];
+    
+        $request->validate($regras, $msg);
+
         $obj->fill([
             'nome' => $request->nome,
             'email' => $request->email,

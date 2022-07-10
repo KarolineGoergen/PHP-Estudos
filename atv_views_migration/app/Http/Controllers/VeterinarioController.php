@@ -27,7 +27,7 @@ class VeterinarioController extends Controller {
     $regras = [
         'crmv' => 'required|max:10|min:5|unique:veterinarios',
         'nome' => 'required|max:100|min:10',
-        'especialidade' => 'required',
+        'id_especialidade' => 'required',
 
     ];
 
@@ -73,6 +73,22 @@ class VeterinarioController extends Controller {
         if(!isset($obj)) { 
             return "<h1>ID: $id não encontrado!"; 
         }
+
+        $regras = [
+            'crmv' => 'required|max:10|min:5',
+            'nome' => 'required|max:100|min:10',
+            'id_especialidade' => 'required',
+    
+        ];
+    
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+            "min" => "O [:attribute] deve conter no mínimo [:min]",
+            "max" => "O [:attribute] deve conter no máximo [:max]",
+            
+        ];
+    
+        $request->validate($regras, $msg);
 
         $obj->fill([
             'crmv' => $request->crmv,

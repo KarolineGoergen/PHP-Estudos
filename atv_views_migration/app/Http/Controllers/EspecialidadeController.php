@@ -76,6 +76,22 @@ class EspecialidadeController extends Controller {
             return "<h1>ID: $id não encontrado!"; 
         }
 
+        $regras = [
+            'nome' => 'required|max:100|min:10',
+            'descricao' => 'required|max:250|min:20',
+    
+        ];
+    
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+            "min" => "O [:attribute] deve conter no mínimo [:min]",
+            "max" => "O [:attribute] deve conter no máximo [:max]",
+        
+            
+        ];
+
+        $request->validate($regras, $msg);
+        
         $obj->fill([
             'nome' => $request->nome,
             'descricao' => $request->descricao,
