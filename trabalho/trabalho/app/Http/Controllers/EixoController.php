@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Eixo;
 
 class EixoController extends Controller
 {
@@ -13,7 +14,8 @@ class EixoController extends Controller
      */
     public function index()
     {
-        //
+        $dados = Eixo::all();
+        return view('eixos.index', compact('dados'));
     }
 
     /**
@@ -23,7 +25,7 @@ class EixoController extends Controller
      */
     public function create()
     {
-        //
+        return view('eixos.create');
     }
 
     /**
@@ -34,7 +36,23 @@ class EixoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $valid = [
+            'nome' => 'required|max:50|min:10',
+        ];
+
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+            "min" => "O [:attribute] deve conter no mínimo [:min]",
+            "max" => "O [:attribute] deve conter no máximo [:max]",
+        ];
+
+        $request->validate($valid, $msg);
+
+        Eixo::create([
+            'nome' => $request->nome,
+        ]);
+
+        return redirect()->route('eixos.index');
     }
 
     /**
@@ -56,7 +74,12 @@ class EixoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $dados = Eixo::find($id);
+
+        if(!isset($dados)){
+            return "<h1>Eixo $id não existe!</h1>";
+        }
+        return view('eixos.edit', compact('dados'));
     }
 
     /**
@@ -68,7 +91,30 @@ class EixoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $obj = Eixo::find($id);
+
+        if(!isset($obj)){
+            return "<h1>Eixo $id não existe!</h1>";
+        }
+
+        $valid = [
+            'nome' => 'required|max:50|min:10',
+        ];
+
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+            "min" => "O [:attribute] deve conter no mínimo [:min]",
+            "max" => "O [:attribute] deve conter no máximo [:max]",
+        ];
+
+        $request->validate($valid, $msg);
+
+        $obj->fill([
+            'nome' => $request->nome,
+        ]);
+
+        $obj->save();
+        return redirect()->route('eixos.index');
     }
 
     /**
@@ -79,6 +125,7 @@ class EixoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Eixo::destroy($id);
+        return redirect()->route('eixos.index');
     }
 }

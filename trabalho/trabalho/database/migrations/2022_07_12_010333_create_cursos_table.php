@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('cursos', function (Blueprint $table) {
             $table->id();
+            $table->string('nome');
+            $table->string('sigla');
+            $table->integer('tempo');
+            $table->unsignedBigInteger('id_eixo');
+            $table->foreign('id_eixo')->references('id')->on('eixos');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
