@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('template.main')->with('titulo', "");
+    return view('templates.main')->with('titulo', "");
 })->name('index');
 
-Route::resource('eixos', 'EixoController');
-Route::resource('cursos', 'CursoController');
-Route::resource('professores', 'ProfessorController');
-Route::resource('disciplinas', 'DisciplinaController');
+Route::resource('eixos', 'App\Http\Controllers\EixoController');
+Route::resource('cursos', 'App\Http\Controllers\CursoController');
+Route::resource('professores', 'App\Http\Controllers\ProfessorController');
+Route::resource('disciplinas', 'App\Http\Controllers\DisciplinaController');
