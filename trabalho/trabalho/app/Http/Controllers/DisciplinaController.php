@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Disciplina;
+use App\Models\Curso;
 
 class DisciplinaController extends Controller
 {
@@ -14,9 +15,9 @@ class DisciplinaController extends Controller
      */
     public function index()
     {
-        $dados = Disciplina::all();
-        $dados2 = Curso::all();
-        return view('disciplinas.index', compact(['dados','dados2']));
+        $dados[0] = Disciplina::all();
+        $dados[1] = Curso::all();
+        return view('disciplinas.index', compact(['dados']));
     }
 
     /**
@@ -25,8 +26,9 @@ class DisciplinaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('disciplinas.create');
+    {   
+        $dados = Curso::all();
+        return view('disciplinas.create', compact('dados'));
     }
 
     /**
@@ -55,7 +57,7 @@ class DisciplinaController extends Controller
         Disciplina::create([
             'nome' => $request->nome,
             'id_curso' => $request->id_curso,
-            'carga' => $carga->carga,
+            'carga' => $request->carga,
         ]);
 
         return redirect()->route('disciplinas.index');
@@ -81,11 +83,12 @@ class DisciplinaController extends Controller
     public function edit($id)
     {
         $dados = Disciplina::find($id);
+        $curso = Curso::all();
 
         if(!isset($dados)){
             return "<h1>Disciplina $id não existe!</h1>";
         }
-        return view('disciplinas.edit', compact('dados'));
+        return view('disciplinas.edit', compact('dados','curso'));
     }
 
     /**
@@ -121,7 +124,7 @@ class DisciplinaController extends Controller
         $obj->fill([
             'nome' => $request->nome,
             'id_curso' => $request->id_curso,
-            'carga' => $carga->carga,
+            'carga' => $request->carga,
         ]);
 
         $obj->save();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Curso;
+use App\Models\Eixo;
 
 class CursoController extends Controller
 {
@@ -14,9 +15,9 @@ class CursoController extends Controller
      */
     public function index()
     {
-        $dados = Curso::all();
-        $dados2 = Eixo::all();
-        return view('cursos.index', compact(['dados','dados2']));
+        $dados[0] = Curso::all();
+        $dados[1] = Eixo::all();
+        return view('cursos.index', compact(['dados']));
     }
 
     /**
@@ -26,7 +27,8 @@ class CursoController extends Controller
      */
     public function create()
     {
-        return view('cursos.create');
+        $dados = Eixo::all();
+        return view('cursos.create', compact('dados'));
     }
 
     /**
@@ -83,11 +85,12 @@ class CursoController extends Controller
     public function edit($id)
     {
         $dados = Curso::find($id);
+        $eixo = Eixo::all();
 
         if(!isset($dados)){
             return "<h1>Curso $id não existe!</h1>";
         }
-        return view('cursos.edit', compact('dados'));
+        return view('cursos.edit', compact('dados','eixo'));
     }
 
     /**

@@ -11,5 +11,5 @@ class Curso extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $filllable = ['nome','sigla','tempo','id_eixo'];
+    protected $fillable = ['nome','sigla','tempo','id_eixo'];
 }

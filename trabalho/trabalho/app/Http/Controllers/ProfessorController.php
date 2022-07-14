@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Professor;
+use App\Models\Eixo;
 
 class ProfessorController extends Controller
 {
@@ -14,9 +15,9 @@ class ProfessorController extends Controller
      */
     public function index()
     {
-        $dados = Professor::all();
-        $dados2 = Eixo::all();
-        return view('professores.index', compact(['dados','dados2']));
+        $dados[0] = Professor::all();
+        $dados[1] = Eixo::all();
+        return view('professores.index', compact(['dados']));
     }
 
     /**
@@ -26,7 +27,8 @@ class ProfessorController extends Controller
      */
     public function create()
     {
-        return view('professores.create');
+        $dados = Eixo::all();
+        return view('professores.create', compact('dados'));
     }
 
     /**
@@ -86,11 +88,12 @@ class ProfessorController extends Controller
     public function edit($id)
     {
         $dados = Professor::find($id);
+        $eixo = Eixo::all();
 
         if(!isset($dados)){
             return "<h1>O Professor $id não existe!</h1>";
         }
-        return view('professores.edit', compact('dados'));
+        return view('professores.edit', compact('dados','eixo'));
     }
 
     /**
