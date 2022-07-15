@@ -1,9 +1,10 @@
-@extends('templates.main', ['titulo' => "Novo Professor"])
-@section('titulo') Professores @endsection
+@extends('templates.main', ['titulo' => "Alterar Disciplina"])
+@section('titulo') Disciplinas @endsection
 @section('conteudo')
 
-    <form action="{{ route('professores.store') }}" method="POST">
+    <form action="{{ route('disciplinas.update', $dados['id']) }}" method="POST">
         @csrf
+        @method('PUT')
         <div class="row">
             <div class="col" >
                 <div class="form-floating mb-3">
@@ -11,78 +12,59 @@
                         type="text" 
                         class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" 
                         name="nome" 
-                        placeholder="Nome do Professor"
-                        value="{{old('nome')}}"
+                        placeholder="Nome do Disciplina"
+                        value="{{$dados['nome']}}"
                     />
                     @if($errors->has('nome'))
                         <div class='invalid-feedback'>
                             {{ $errors->first('nome') }}
                         </div>
                     @endif
-                    <label for="nome">Nome do Professor</label>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col" >
-                <div class="form-floating mb-3">
-                    <input 
-                        type="text" 
-                        class="form-control {{ $errors->has('sig') ? 'is-invalid' : '' }}" 
-                        name="email" 
-                        placeholder="Email"
-                        value="{{old('email')}}"
-                    />
-                    @if($errors->has('email'))
-                        <div class='invalid-feedback'>
-                            {{ $errors->first('email') }}
-                        </div>
-                    @endif
-                    <label for="nome">Email</label>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col" >
-                <div class="form-floating mb-3">
-                    <input 
-                        type="text" 
-                        class="form-control {{ $errors->has('siape') ? 'is-invalid' : '' }}" 
-                        name="siape" 
-                        placeholder="Siape"
-                        value="{{old('siape')}}"
-                    />
-                    @if($errors->has('siape'))
-                        <div class='invalid-feedback'>
-                            {{ $errors->first('siape') }}
-                        </div>
-                    @endif
-                    <label for="nome">Siape</label>
+                    <label for="nome">Nome da Disciplina</label>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col">
                 <div class="input-group mb-3">
-                <label class="input-group-text" for="inputGroupSelect01" >Eixo</label>
-                    <select name="id_eixo" class="form-control {{ $errors->has('id_eixo') ? 'is-invalid' : '' }}">
-                        @foreach ($dados as $item)
-                        <option value="{{$item->id}}" @if($item->id == old('id_eixo')) selected="true" @endif>
+                <label class="input-group-text" for="inputGroupSelect01" >Curso</label>
+                    <select name="id_curso" class="form-control {{ $errors->has('id_curso') ? 'is-invalid' : '' }}">
+                        @foreach ($curso as $item)
+                        <option value="{{$item->id}}" @if($item->id == $dados['id_curso']) selected="true" @endif>
                             {{ $item->nome }}
                         </option>
                         @endforeach
                     </select>
-                    @if($errors->has('id_eixo'))
+                    @if($errors->has('id_curso'))
                         <div class='invalid-feedback'>
-                            {{ $errors->first('id_eixo') }}
+                            {{ $errors->first('id_curso') }}
                         </div>
                     @endif
                 </div>
             </div>
         </div>
         <div class="row">
+            <div class="col" >
+                <div class="form-floating mb-3">
+                    <input 
+                        type="text" 
+                        class="form-control {{ $errors->has('carga') ? 'is-invalid' : '' }}" 
+                        name="carga" 
+                        placeholder="Carga"
+                        value="{{$dados['carga']}}"
+                    />
+                    @if($errors->has('carga'))
+                        <div class='invalid-feedback'>
+                            {{ $errors->first('carga') }}
+                        </div>
+                    @endif
+                    <label for="nome">Carga</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col">
-                <a href="{{route('professores.index')}}" class="btn btn-secondary btn-block align-content-center">
+                <a href="{{route('disciplinas.index')}}" class="btn btn-secondary btn-block align-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
                         <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z"/>
                     </svg>

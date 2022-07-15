@@ -1,11 +1,10 @@
-@extends('templates.main', ['titulo' => "Alterar Professor"])
+@extends('templates.main', ['titulo' => "Novo Professor"])
 @section('titulo') Professores @endsection
 @section('conteudo')
 
-<form action="{{ route('professores.update', $dados['id']) }}" method="POST">
-    @csrf
-    @method('PUT')
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <form action="{{ route('professores.store') }}" method="POST">
+        @csrf
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
             <label class="btn btn-secondary active">
                 <input type="radio" name="ativo" id="ativo" value="1"> Ativo
             </label>
@@ -13,7 +12,7 @@
                 <input type="radio" name="ativo" id="inativo" value="0"> Inativo
             </label>
         </div>
-    <div class="row">
+        <div class="row">
             <div class="col" >
                 <div class="form-floating mb-3">
                     <input 
@@ -21,7 +20,7 @@
                         class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" 
                         name="nome" 
                         placeholder="Nome do Professor"
-                        value="{{$dados['nome']}}"
+                        value="{{old('nome')}}"
                     />
                     @if($errors->has('nome'))
                         <div class='invalid-feedback'>
@@ -32,6 +31,7 @@
                 </div>
             </div>
         </div>
+    
         <div class="row">
             <div class="col" >
                 <div class="form-floating mb-3">
@@ -40,7 +40,7 @@
                         class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" 
                         name="email" 
                         placeholder="Email"
-                        value="{{$dados['email']}}"
+                        value="{{old('email')}}"
                     />
                     @if($errors->has('email'))
                         <div class='invalid-feedback'>
@@ -59,7 +59,7 @@
                         class="form-control {{ $errors->has('siape') ? 'is-invalid' : '' }}" 
                         name="siape" 
                         placeholder="Siape"
-                        value="{{$dados['siape']}}"
+                        value="{{old('siape')}}"
                     />
                     @if($errors->has('siape'))
                         <div class='invalid-feedback'>
@@ -75,8 +75,8 @@
                 <div class="input-group mb-3">
                 <label class="input-group-text" for="inputGroupSelect01" >Eixo</label>
                     <select name="id_eixo" class="form-control {{ $errors->has('id_eixo') ? 'is-invalid' : '' }}">
-                        @foreach ($eixo as $item)
-                        <option value="{{$item->id}}" @if($item->id == $dados['id_eixo']) selected="true" @endif>
+                        @foreach ($dados as $item)
+                        <option value="{{$item->id}}" @if($item->id == old('id_eixo')) selected="true" @endif>
                             {{ $item->nome }}
                         </option>
                         @endforeach

@@ -113,8 +113,8 @@ class ProfessorController extends Controller
 
         $valid = [
             'nome' => 'required|max:100|min:10',
-            'email' => 'required|max:250|min:15|unique:professors',
-            'siape' => 'required|max:10|min:8|unique:professors',
+            'email' => 'required|max:250|min:15',
+            'siape' => 'required|max:10|min:8',
             'id_eixo' => 'required',
             'ativo' => 'required',
 

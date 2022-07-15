@@ -42,7 +42,7 @@ class DisciplinaController extends Controller
         $valid = [
             'nome' => 'required|max:100|min:10',
             'id_curso' => 'required',
-            'tempo' => 'required|max:12|min:1',
+            'carga' => 'required|max:12|min:1',
 
         ];
 
@@ -109,7 +109,7 @@ class DisciplinaController extends Controller
         $valid = [
             'nome' => 'required|max:100|min:10',
             'id_curso' => 'required',
-            'tempo' => 'required|max:12|min:1',
+            'carga' => 'required|max:12|min:1',
 
         ];
 

@@ -13,7 +13,7 @@
                         class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" 
                         name="nome" 
                         placeholder="Nome do Cursp"
-                        value="{{old('nome')}}"
+                        value="{{$dados['nome']}}"
                     />
                     @if($errors->has('nome'))
                         <div class='invalid-feedback'>
@@ -32,7 +32,7 @@
                         class="form-control {{ $errors->has('sigla') ? 'is-invalid' : '' }}" 
                         name="sigla" 
                         placeholder="Sigla"
-                        value="{{old('sigla')}}"
+                        value="{{$dados['sigla']}}"
                     />
                     @if($errors->has('sigla'))
                         <div class='invalid-feedback'>
@@ -51,7 +51,7 @@
                         class="form-control {{ $errors->has('tempo') ? 'is-invalid' : '' }}" 
                         name="tempo" 
                         placeholder="Tempo do Curso"
-                        value="{{old('tempo')}}"
+                        value="{{$dados['tempo']}}"
                     />
                     @if($errors->has('tempo'))
                         <div class='invalid-feedback'>
@@ -67,8 +67,8 @@
                 <div class="input-group mb-3">
                 <label class="input-group-text" for="inputGroupSelect01" >Eixo</label>
                     <select name="id_eixo" class="form-control {{ $errors->has('id_eixo') ? 'is-invalid' : '' }}">
-                        @foreach ($dados as $item)
-                        <option value="{{$item->id}}" @if($item->id == old('id_eixo')) selected="true" @endif>
+                        @foreach ($eixo as $item)
+                        <option value="{{$item->id}}" @if($item->id == $dados['id_eixo']) selected="true" @endif>
                             {{ $item->nome }}
                         </option>
                         @endforeach
