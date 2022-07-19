@@ -13,7 +13,7 @@
 
     </head>
     <body>
-        <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
+        <nav class="navbar sticky-top navbar-expand-md  navbar-dark bg-primary">
             <div class="container-fluid">
                 <a href="{{route('index')}}" class="navbar-brand ms-sm-3">
                         <span class="ms-3 fs-5">IFPR</span>
@@ -39,6 +39,7 @@
                                 <li><a href="{{route('disciplinas.index')}}" class="dropdown-item">Disciplinas</a></li>
                                 <li><a href="{{route('cursos.index')}}" class="dropdown-item">Cursos</a></li>
                                 <li><a href="{{route('eixos.index')}}" class="dropdown-item">Eixos</a></li>
+                                <li><a href="{{route('vinculos.index')}}" class="dropdown-item">Vínculos</a></li>
                             </ul>
                         </li>
                     </ul>
