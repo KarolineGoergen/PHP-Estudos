@@ -34,7 +34,7 @@ class VinculoController extends Controller
         $dados[0] = Vinculo::all();
         $dados[1] = Professor::where('ativo', '=', 1)->get();
         $dados[2] = Disciplina::all();
-        return view('vinculos.create', compact('dados'));
+        return view('vinculos.create', compact(['dados']));
     }
 
     /**
@@ -45,22 +45,21 @@ class VinculoController extends Controller
      */
     public function store(Request $request)
     {
-        $regras = [
-            'id_professor' => 'required',
-            'id_disciplina' => 'required',
-        ];
+        $professor = $request->professor;
 
-        $msg = [
-            "required" => "O campo [:attribute] é obrigatório!",
-        ];
+        foreach($professor as $itens){
 
-        $request->validate($regras, $msg);
+            $array = explode('_',$itens);
 
-        Vinculo::create([
-            'id_professor' => $request->id_professor,
-            'id_disciplina' => $request->id_disciplina,
-        ]);
+            Vinculo::where('id_disciplina', $array[0])->forceDelete();
 
+            Vinculo::create([
+                'id_professor' => $array[1],
+                'id_disciplina' => $array[0]
+            ]);
+        }
+
+    
         return redirect()->route('vinculos.index');
     }
 
