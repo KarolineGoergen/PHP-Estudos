@@ -12,6 +12,10 @@ class Aluno extends Model
     use SoftDeletes;
 
     protected $fillable = ['nome','curso_id'];
+
+    public function curso() {
+        return $this->hasMany('\App\Models\Curso');
+    }
     
     public function disciplina() {
         return $this->belongsToMany('\App\Models\Disciplina', 'matriculas')
