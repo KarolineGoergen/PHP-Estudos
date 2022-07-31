@@ -17,9 +17,6 @@ class Aluno extends Model
         return $this->hasMany('\App\Models\Curso');
     }
     
-    public function disciplina() {
-        return $this->belongsToMany('\App\Models\Disciplina', 'matriculas')
-            ->withPivot('descricao');
-    }
+  
 
 }
