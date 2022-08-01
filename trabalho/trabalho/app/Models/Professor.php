@@ -12,4 +12,8 @@ class Professor extends Model
     use SoftDeletes;
 
     protected $fillable = ['nome','email','siape','id_eixo','ativo'];
+
+    public function disciplina() {
+        return $this->hasMany('\App\Models\Disciplina');
+    }
 }

@@ -9,6 +9,8 @@ class Matricula extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['aluno_id', 'disciplina_id'];
+
     public function aluno() {
         return $this->belongsTo('App\Models\Aluno');
     }

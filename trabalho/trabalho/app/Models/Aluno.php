@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Aluno extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     protected $fillable = ['nome','curso_id'];
 

@@ -6,9 +6,9 @@
         <div class="col">
             
             <x-datalistA 
-                :header="['ID', 'NOME', 'CURSO', 'AÇÕES']" 
+                :header="['NOME', 'AÇÕES']" 
                 :data="$dados"
-                :hide="[true, false, true]" 
+                :hide="[true, true]" 
             />
 
         </div>

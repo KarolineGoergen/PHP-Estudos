@@ -22,7 +22,7 @@
                     <td class="d-none d-md-table-cell">{{ $item['id'] }}</td>
                     <td>{{ $item['nome'] }}</td>
                     @foreach ($data[1] as $curso)
-                        @if($curso['id'] == $item['id_curso'])
+                        @if($curso['id'] == $item['curso_id'])
                         <td class="d-none d-md-table-cell">{{ $curso['nome'] }}</td>
                         @endif
                     @endforeach

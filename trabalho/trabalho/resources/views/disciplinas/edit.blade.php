@@ -28,16 +28,16 @@
             <div class="col">
                 <div class="input-group mb-3">
                 <label class="input-group-text" for="inputGroupSelect01" >Curso</label>
-                    <select name="id_curso" class="form-control {{ $errors->has('id_curso') ? 'is-invalid' : '' }}">
+                    <select name="curso_id" class="form-control {{ $errors->has('curso_id') ? 'is-invalid' : '' }}">
                         @foreach ($curso as $item)
-                        <option value="{{$item->id}}" @if($item->id == $dados['id_curso']) selected="true" @endif>
+                        <option value="{{$item->id}}" @if($item->id == $dados['curso_id']) selected="true" @endif>
                             {{ $item->nome }}
                         </option>
                         @endforeach
                     </select>
-                    @if($errors->has('id_curso'))
+                    @if($errors->has('curso_id'))
                         <div class='invalid-feedback'>
-                            {{ $errors->first('id_curso') }}
+                            {{ $errors->first('curso_id') }}
                         </div>
                     @endif
                 </div>

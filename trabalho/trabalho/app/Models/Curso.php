@@ -14,4 +14,8 @@ class Curso extends Model
     public function disciplina() {
         return $this->hasMany('\App\Models\Disciplina');
     }
+
+    public function aluno() {
+        return $this->hasMany('\App\Models\Aluno');
+    }
 }

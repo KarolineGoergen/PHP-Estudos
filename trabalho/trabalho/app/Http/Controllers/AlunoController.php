@@ -8,16 +8,16 @@ use App\Models\Curso;
 
 class AlunoController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $dados = Aluno::all();
+        $dados[0] = Aluno::all();
+        $dados[1] = Curso::all();
         return view('alunos.index', compact('dados'));
-       
     }
 
     /**
@@ -27,8 +27,8 @@ class AlunoController extends Controller
      */
     public function create()
     {   
-        
-        return view('alunos.create');
+        $dados = Curso::all();
+        return view('alunos.create', compact('dados'));
     }
 
     /**
@@ -39,11 +39,11 @@ class AlunoController extends Controller
      */
     public function store(Request $request)
     {
-        $obj_curso = new Curso();
-        $obj_aluno = new Aluno();
-        $obj_aluno->nome =  ($request->nome);
-        $obj_aluno->curso()->associate($obj_curso);
-        $obj_aluno->save();
+     
+        Aluno::create([
+            'nome' => $request->nome,
+            'curso_id' => $request->curso_id,
+        ]);
 
         return redirect()->route('alunos.index');
     }
@@ -67,7 +67,13 @@ class AlunoController extends Controller
      */
     public function edit($id)
     {
- 
+        $dados = Aluno::find($id);
+        $curso = Curso::all();
+
+        if(!isset($dados)){
+            return "<h1>Aluno $id não existe!</h1>";
+        }
+        return view('alunos.edit', compact('dados','curso'));
     }
 
     /**
@@ -79,7 +85,19 @@ class AlunoController extends Controller
      */
     public function update(Request $request, $id)
     {
-      
+        $obj = Aluno::find($id);
+
+        if(!isset($obj)){
+            return "<h1>Curso $id não existe!</h1>";
+        }
+
+        $obj->fill([
+            'nome' => $request->nome,
+            'curso_id' => $request->curso_id,
+        ]);
+
+        $obj->save();
+        return redirect()->route('alunos.index');
     }
 
     /**
