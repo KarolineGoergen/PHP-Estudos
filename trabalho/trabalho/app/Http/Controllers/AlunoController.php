@@ -8,16 +8,16 @@ use App\Models\Curso;
 
 class AlunoController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $dados[0] = Aluno::all();
-        $dados[1] = Curso::all();
+        $dados = Aluno::all();
         return view('alunos.index', compact('dados'));
+       
     }
 
     /**
@@ -27,8 +27,8 @@ class AlunoController extends Controller
      */
     public function create()
     {   
-        $dados = Curso::all();
-        return view('alunos.create', compact('dados'));
+        
+        return view('alunos.create');
     }
 
     /**
@@ -39,13 +39,20 @@ class AlunoController extends Controller
      */
     public function store(Request $request)
     {
-     
-        Aluno::create([
-            'nome' => $request->nome,
-            'curso_id' => $request->curso_id,
-        ]);
+        $obj_aluno = Aluno::find($request->aluno_id);
 
-        return redirect()->route('alunos.index');
+        if(isset($obj_aluno)) {
+            $obj_curso = new Curso();
+            $obj_curso->nome = $request->nome;
+            $obj_curso->sigla = $request->sigla;
+            $obj_curso->tempo = $request->tempo;
+            $obj_curso->aluno()->associate($obj_aluno);
+            $obj_curso->save();
+            
+            return redirect()->route('alunos.index');;
+        }
+
+        
     }
 
     /**
@@ -67,13 +74,7 @@ class AlunoController extends Controller
      */
     public function edit($id)
     {
-        $dados = Aluno::find($id);
-        $curso = Curso::all();
-
-        if(!isset($dados)){
-            return "<h1>Aluno $id não existe!</h1>";
-        }
-        return view('alunos.edit', compact('dados','curso'));
+ 
     }
 
     /**
@@ -85,19 +86,7 @@ class AlunoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $obj = Aluno::find($id);
-
-        if(!isset($obj)){
-            return "<h1>Curso $id não existe!</h1>";
-        }
-
-        $obj->fill([
-            'nome' => $request->nome,
-            'curso_id' => $request->curso_id,
-        ]);
-
-        $obj->save();
-        return redirect()->route('alunos.index');
+      
     }
 
     /**
