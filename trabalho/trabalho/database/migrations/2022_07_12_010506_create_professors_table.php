@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('nome');
             $table->string('email');
             $table->unsignedBigInteger('siape');
-            $table->unsignedBigInteger('id_eixo');
-            $table->foreign('id_eixo')->references('id')->on('eixos');
+            $table->unsignedBigInteger('eixo_id');
+            $table->foreign('eixo_id')->references('id')->on('eixos');
             $table->boolean('ativo'); 
             $table->softDeletes();
             $table->timestamps();

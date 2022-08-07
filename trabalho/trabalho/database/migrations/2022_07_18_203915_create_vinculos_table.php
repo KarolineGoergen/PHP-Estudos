@@ -14,11 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('vinculos', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_disciplina');
-            $table->foreign('id_disciplina')->references('id')->on('disciplinas');
-            $table->unsignedBigInteger('id_professor');
-            $table->foreign('id_professor')->references('id')->on('professors');
-            $table->primary('id_disciplina');
+            $table->unsignedBigInteger('disciplina_id');
+            $table->foreign('disciplina_id')->references('id')->on('disciplinas');
+            $table->unsignedBigInteger('professor_id');
+            $table->foreign('professor_id')->references('id')->on('professors');
+            $table->primary('disciplina_id');
             $table->softDeletes();
             $table->timestamps();
         });

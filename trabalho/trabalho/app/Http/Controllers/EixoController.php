@@ -48,9 +48,9 @@ class EixoController extends Controller
 
         $request->validate($valid, $msg);
 
-        Eixo::create([
-            'nome' => $request->nome,
-        ]);
+        $obj_eixo = new Eixo();
+        $obj_eixo->nome = mb_strtoupper($request->nome, 'UTF-8');
+        $obj_eixo->save();
 
         return redirect()->route('eixos.index');
     }

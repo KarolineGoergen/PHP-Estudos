@@ -11,5 +11,5 @@ class Vinculo extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['id_disciplina', 'id_professor'];
+    protected $fillable = ['disciplina_id', 'professor_id'];
 }

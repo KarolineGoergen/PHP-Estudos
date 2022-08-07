@@ -43,7 +43,7 @@ class ProfessorController extends Controller
             'nome' => 'required|max:100|min:10',
             'email' => 'required|max:250|min:15|unique:professors',
             'siape' => 'required|max:10|min:8|unique:professors',
-            'id_eixo' => 'required',
+            'eixo_id' => 'required',
             'ativo' => 'required',
 
         ];
@@ -57,15 +57,20 @@ class ProfessorController extends Controller
 
         $request->validate($valid, $msg);
 
-        Professor::create([
-            'nome' => $request->nome,
-            'email' => $request->email,
-            'siape' => $request->siape,
-            'id_eixo' => $request->id_eixo,
-            'ativo' => $request->ativo,
-        ]);
+        $obj_eixo = Eixo::find($request->eixo_id);
 
-        return redirect()->route('professores.index');
+        if(isset($obj_eixo)) {
+
+            $obj_professor = new Professor();
+            $obj_professor->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $obj_professor->email = mb_strtoupper($request->email, 'UTF-8');
+            $obj_professor->siape = mb_strtoupper($request->siape, 'UTF-8');
+            $obj_professor->ativo = mb_strtoupper($request->ativo, 'UTF-8');
+            $obj_professor->eixo()->associate($obj_eixo);
+            $obj_professor->save();
+
+            return redirect()->route('professores.index');
+        }
     }
 
     /**

@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Matricula;
+use App\Models\Aluno;
+use App\Models\Disciplina;
 use Illuminate\Http\Request;
 
 class MatriculaController extends Controller
@@ -34,7 +36,17 @@ class MatriculaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $obj_aluno = Aluno::find($request->aluno_id);
+        $obj_disciplina = Disciplina::find($request->disciplina_id);
+
+        if(isset($obj_aluno) && isset($obj_disciplina)){
+            $obj_matricula = new Matricula();
+            $obj_matricula->aluno()->associate($obj_aluno);
+            $obj_matricula->disciplina()->associate($obj_disciplina);
+            $obj_matricula->save();
+
+            return redirect()->route('matriculas.index');
+        }
     }
 
     /**

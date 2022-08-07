@@ -13,7 +13,7 @@ class Aluno extends Model
     protected $fillable = ['nome','curso_id'];
 
     public function curso() {
-        return $this->hasMany('\App\Models\Curso');
+        return $this->belongsTo('\App\Models\Curso');
     }
     
   

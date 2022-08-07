@@ -15,8 +15,9 @@ class AlunoController extends Controller
      */
     public function index()
     {
-        $dados = Aluno::all();
-        return view('alunos.index', compact('dados'));
+        $dados[0] = Aluno::all();
+        $dados[1] = Curso::all();
+        return view('alunos.index', compact(['dados']));
        
     }
 
@@ -28,7 +29,8 @@ class AlunoController extends Controller
     public function create()
     {   
         
-        return view('alunos.create');
+        $dados = Curso::all();
+        return view('alunos.create', compact('dados'));
     }
 
     /**
@@ -39,20 +41,18 @@ class AlunoController extends Controller
      */
     public function store(Request $request)
     {
-        $obj_aluno = Aluno::find($request->aluno_id);
+        $obj_curso = Curso::find($request->curso_id);
 
-        if(isset($obj_aluno)) {
-            $obj_curso = new Curso();
-            $obj_curso->nome = $request->nome;
-            $obj_curso->sigla = $request->sigla;
-            $obj_curso->tempo = $request->tempo;
-            $obj_curso->aluno()->associate($obj_aluno);
-            $obj_curso->save();
+        if(isset($obj_curso)) {
+            $obj_aluno = new Aluno();
+            $obj_aluno->nome = $request->nome;
+            $obj_aluno->curso()->associate($obj_curso);
+            $obj_aluno->save();
             
             return redirect()->route('alunos.index');;
         }
 
-        
+        return "ok";
     }
 
     /**

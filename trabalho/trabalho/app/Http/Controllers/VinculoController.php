@@ -51,11 +51,11 @@ class VinculoController extends Controller
 
             $array = explode('_',$itens);
 
-            Vinculo::where('id_disciplina', $array[0])->forceDelete();
+            Vinculo::where('disciplina_id', $array[0])->forceDelete();
 
             Vinculo::create([
-                'id_professor' => $array[1],
-                'id_disciplina' => $array[0]
+                'professor_id' => $array[1],
+                'disciplina_id' => $array[0]
             ]);
         }
 

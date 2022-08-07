@@ -66,16 +66,16 @@
             <div class="col">
                 <div class="input-group mb-3">
                 <label class="input-group-text" for="inputGroupSelect01" >Eixo</label>
-                    <select name="id_eixo" class="form-control {{ $errors->has('id_eixo') ? 'is-invalid' : '' }}">
+                    <select name="eixo_id" class="form-control {{ $errors->has('eixo_id') ? 'is-invalid' : '' }}">
                         @foreach ($eixo as $item)
-                        <option value="{{$item->id}}" @if($item->id == $dados['id_eixo']) selected="true" @endif>
+                        <option value="{{$item->id}}" @if($item->id == $dados['eixo_id']) selected="true" @endif>
                             {{ $item->nome }}
                         </option>
                         @endforeach
                     </select>
-                    @if($errors->has('id_eixo'))
+                    @if($errors->has('eixo_id'))
                         <div class='invalid-feedback'>
-                            {{ $errors->first('id_eixo') }}
+                            {{ $errors->first('eixo_id') }}
                         </div>
                     @endif
                 </div>

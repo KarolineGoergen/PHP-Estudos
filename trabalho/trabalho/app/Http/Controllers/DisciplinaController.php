@@ -41,7 +41,7 @@ class DisciplinaController extends Controller
     {
         $valid = [
             'nome' => 'required|max:100|min:10',
-            'id_curso' => 'required',
+            'curso_id' => 'required',
             'carga' => 'required|max:12|min:1',
 
         ];
@@ -54,13 +54,18 @@ class DisciplinaController extends Controller
 
         $request->validate($valid, $msg);
 
-        Disciplina::create([
-            'nome' => $request->nome,
-            'id_curso' => $request->id_curso,
-            'carga' => $request->carga,
-        ]);
+        $obj_curso = Curso::find($request->curso_id);
 
-        return redirect()->route('disciplinas.index');
+        if(isset($obj_curso)) {
+
+            $obj_disciplina = new Disciplina();
+            $obj_disciplina->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $obj_disciplina->carga = mb_strtoupper($request->carga, 'UTF-8');
+            $obj_disciplina->curso()->associate($obj_curso);
+            $obj_disciplina->save();
+
+            return redirect()->route('disciplinas.index');
+        }
     }
 
     /**

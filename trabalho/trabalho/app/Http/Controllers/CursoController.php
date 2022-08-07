@@ -43,7 +43,7 @@ class CursoController extends Controller
             'nome' => 'required|max:50|min:10',
             'sigla' => 'required|max:8|min:2',
             'tempo' => 'required|max:2|min:1',
-            'id_eixo' => 'required',
+            'eixo_id' => 'required',
 
         ];
 
@@ -55,14 +55,18 @@ class CursoController extends Controller
 
         $request->validate($valid, $msg);
 
-        Curso::create([
-            'nome' => $request->nome,
-            'sigla' => $request->sigla,
-            'tempo' => $request->tempo,
-            'id_eixo' => $request->id_eixo,
-        ]);
+        $obj_eixo = Eixo::find($request->eixo_id);
 
-        return redirect()->route('cursos.index');
+        if(isset($obj_eixo)) {
+            $obj_curso = new Curso();
+            $obj_curso->nome = $request->nome;
+            $obj_curso->sigla = $request->sigla;
+            $obj_curso->tempo = $request->tempo;
+            $obj_curso->eixo()->associate($obj_eixo);
+            $obj_curso->save();
+            
+            return redirect()->route('cursos.index');
+        }
     }
 
     /**
@@ -102,37 +106,15 @@ class CursoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $obj = Curso::find($id);
+        
+         $request = Curso::findOrFail($request->id);   
 
-        if(!isset($obj)){
-            return "<h1>Curso $id não existe!</h1>";
-        }
+         $request->fill($request()->only(['nome', 'sigla', 'tempo', 'eixo_id']));
 
-        $valid = [
-            'nome' => 'required|max:50|min:10',
-            'sigla' => 'required|max:8|min:2',
-            'tempo' => 'required|max:2|min:1',
-            'id_eixo' => 'required',
+         $request->save();
 
-        ];
-
-        $msg = [
-            "required" => "O campo [:attribute] é obrigatório",
-            "min" => "O [:attribute] deve conter no mínimo [:min]",
-            "max" => "O [:attribute] deve conter no máximo [:max]",
-        ];
-
-        $request->validate($valid, $msg);
-
-        $obj->fill([
-            'nome' => $request->nome,
-            'sigla' => $request->sigla,
-            'tempo' => $request->tempo,
-            'id_eixo' => $request->id_eixo,
-        ]);
-
-        $obj->save();
-        return redirect()->route('cursos.index');
+         return redirect()->route('cursos.index');
+   
     }
 
     /**
