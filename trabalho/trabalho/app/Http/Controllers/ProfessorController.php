@@ -15,8 +15,7 @@ class ProfessorController extends Controller
      */
     public function index()
     {
-        $dados[0] = Professor::all();
-        $dados[1] = Eixo::all();
+        $dados = Professor::with('eixo')->get();
         return view('professores.index', compact(['dados']));
     }
 
@@ -110,11 +109,7 @@ class ProfessorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $obj = Professor::find($id);
-
-        if(!isset($obj)){
-            return "<h1>O Professor $id não existe!</h1>";
-        }
+        $obj_professor = Professor::find($id);
 
         $valid = [
             'nome' => 'required|max:100|min:10',
@@ -129,21 +124,29 @@ class ProfessorController extends Controller
             "required" => "O campo [:attribute] é obrigatório",
             "min" => "O [:attribute] deve conter no mínimo [:min]",
             "max" => "O [:attribute] deve conter no máximo [:max]",
-            "unique" => "O campo [:attribute] já existe!",
+            
         ];
 
         $request->validate($valid, $msg);
 
-        $obj->fill([
-            'nome' => $request->nome,
-            'email' => $request->email,
-            'siape' => $request->siape,
-            'id_eixo' => $request->id_eixo,
-            'ativo' => $request->ativo,
-        ]);
+        if(!isset($obj_professor)){
+            return "<h1>O Professor $id não existe!</h1>";
+        }
 
-        $obj->save();
-        return redirect()->route('professores.index');
+        $obj_eixo = Eixo::find($request->eixo_id);
+
+        if(isset($obj_eixo)) {
+
+            $obj_professor->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $obj_professor->email = mb_strtoupper($request->email, 'UTF-8');
+            $obj_professor->siape = mb_strtoupper($request->siape, 'UTF-8');
+            $obj_professor->ativo = mb_strtoupper($request->ativo, 'UTF-8');
+            $obj_professor->eixo()->associate($obj_eixo);
+            $obj_professor->save();
+
+            return redirect()->route('professores.index');
+        }
+
     }
 
     /**

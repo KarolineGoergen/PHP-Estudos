@@ -17,16 +17,11 @@
         </tr>
         </thead>
         <tbody>
-            @foreach ($data[0] as $item)
+        @foreach ($data as $item)
                 <tr>
                     <td class="d-none d-md-table-cell">{{ $item['id'] }}</td>
-                    <td>{{ $item['nome'] }}</td>
-                    @foreach ($data[1] as $curso)
-                        @if($curso['id'] == $item['curso_id'])
-                        <td class="d-none d-md-table-cell">{{ $curso['nome'] }}</td>
-                        @endif
-                    @endforeach
-                    <td>{{ $item['carga'] }}</td>
+                    <td class="d-none d-md-table-cell">{{ $item->curso->nome }}</td>
+                    <td class="d-none d-md-table-cell">{{ $item['carga'] }}</td>
                     <td>
                         <a href= "{{ route('disciplinas.edit', $item['id']) }}" class="btn btn-success">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FFF" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">

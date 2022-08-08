@@ -15,9 +15,8 @@ class CursoController extends Controller
      */
     public function index()
     {
-        $dados[0] = Curso::all();
-        $dados[1] = Eixo::all();
-        return view('cursos.index', compact(['dados']));
+        $dados = Curso::with(['eixo'])->get();
+        return view('cursos.index', compact('dados'));
     }
 
     /**
@@ -91,9 +90,10 @@ class CursoController extends Controller
         $dados = Curso::find($id);
         $eixo = Eixo::all();
 
-        if(!isset($dados)){
-            return "<h1>Curso $id não existe!</h1>";
+        if(!isset($dados)) {
+            return "<h1> ID: $id não encontrado! </h1>";
         }
+
         return view('cursos.edit', compact('dados','eixo'));
     }
 
@@ -105,16 +105,42 @@ class CursoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        $obj_curso = Curso::find($id);
+
+        $valid = [
+            'nome' => 'required|max:50|min:10',
+            'sigla' => 'required|max:8|min:2',
+            'tempo' => 'required|max:2|min:1',
+            'eixo_id' => 'required',
+
+        ];
+
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+            "min" => "O [:attribute] deve conter no mínimo [:min]",
+            "max" => "O [:attribute] deve conter no máximo [:max]",
+        ];
         
-         $request = Curso::findOrFail($request->id);   
+        $request->validate($valid, $msg);
 
-         $request->fill($request()->only(['nome', 'sigla', 'tempo', 'eixo_id']));
+        if(!isset($obj_curso)) { 
 
-         $request->save();
+            return "<h1>ID: $id não encontrado! </h1>"; 
+        }
 
-         return redirect()->route('cursos.index');
-   
+        $obj_eixo = Eixo::find($request->eixo_id);
+
+        if(isset($obj_curso)) {
+
+            $obj_curso->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $obj_curso->sigla = mb_strtoupper($request->sigla, 'UTF-8');
+            $obj_curso->tempo = mb_strtoupper($request->tempo, 'UTF-8');
+            $obj_curso->eixo()->associate($obj_eixo);
+            $obj_curso->save();
+
+            return redirect()->route('cursos.index');
+        }
     }
 
     /**

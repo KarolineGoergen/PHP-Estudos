@@ -91,9 +91,9 @@ class EixoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $obj = Eixo::find($id);
+        $obj_eixo = Eixo::find($id);
 
-        if(!isset($obj)){
+        if(!isset($obj_eixo)){
             return "<h1>Eixo $id não existe!</h1>";
         }
 
@@ -109,11 +109,9 @@ class EixoController extends Controller
 
         $request->validate($valid, $msg);
 
-        $obj->fill([
-            'nome' => $request->nome,
-        ]);
+        $obj_eixo->nome = mb_strtoupper($request->nome, 'UTF-8');
+        $obj_eixo->save();
 
-        $obj->save();
         return redirect()->route('eixos.index');
     }
 

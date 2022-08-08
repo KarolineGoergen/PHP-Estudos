@@ -15,8 +15,7 @@ class DisciplinaController extends Controller
      */
     public function index()
     {
-        $dados[0] = Disciplina::all();
-        $dados[1] = Curso::all();
+        $dados = Disciplina::with(['curso'])->get();
         return view('disciplinas.index', compact(['dados']));
     }
 
@@ -105,9 +104,9 @@ class DisciplinaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $obj = Disciplina::find($id);
+        $obj_disciplina = Disciplina::find($id);
 
-        if(!isset($obj)){
+        if(!isset($obj_disciplina)){
             return "<h1>Curso $id não existe!</h1>";
         }
 
@@ -126,14 +125,17 @@ class DisciplinaController extends Controller
 
         $request->validate($valid, $msg);
 
-        $obj->fill([
-            'nome' => $request->nome,
-            'id_curso' => $request->id_curso,
-            'carga' => $request->carga,
-        ]);
+        $obj_curso = Curso::find($request->curso_id);
 
-        $obj->save();
-        return redirect()->route('disciplinas.index');
+        if(isset($obj_curso)) {
+
+            $obj_disciplina->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $obj_disciplina->carga = mb_strtoupper($request->carga, 'UTF-8');
+            $obj_disciplina->curso()->associate($obj_curso);
+            $obj_disciplina->save();
+
+            return redirect()->route('disciplinas.index');
+        }
     }
 
     /**
