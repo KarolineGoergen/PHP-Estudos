@@ -1,11 +1,12 @@
-@extends('templates.main', ['titulo' => "Novo Aluno"])
+@extends('templates.main', ['titulo' => "Alterar Aluno"])
 
 @section('titulo') Alunos @endsection
 
 @section('conteudo')
 
-    <form action="{{ route('alunos.store') }}" method="POST">
+    <form action="{{ route('alunos.update', $dados['id']) }}" method="POST">
         @csrf
+        @method('PUT')
         <div class="row">
             <div class="col" >
                 <div class="form-floating mb-3">
@@ -14,7 +15,7 @@
                         class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}"  
                         name="nome" 
                         placeholder="Nome"
-                        value="{{old('nome')}}"
+                        value="{{$dados['nome']}}"
                     />
                     @if($errors->has('nome'))
                         <div class='invalid-feedback'>
@@ -31,13 +32,14 @@
                 <label class="input-group-text" for="inputGroupSelect01" >Curso</label>
                     <select name="curso_id" class="form-control {{ $errors->has('curso_id') ? 'is-invalid' : '' }}">
                         @foreach ($curso as $item)
-                        <option value="{{$item->id}}" @if($item->id == old('curso_id')) selected="true" @endif>
+                        <option value="{{$item->id}}" @if($item->id == $dados['curso_id']) selected="true" @endif>
                             {{ $item->nome }}
                         </option>
+                        $dados['eixo_id'])
                         @endforeach
                         @if($errors->has('curso_id'))
                         <div class='invalid-feedback'>
-                            {{ $errors->first('curso_id') }}
+                            {{ $errors->first('id_curso') }}
                         </div>
                     @endif
                     </select>

@@ -45,21 +45,25 @@ class VinculoController extends Controller
      */
     public function store(Request $request)
     {
-        $professor = $request->professor;
+        $professores = $request->professores;
 
-        foreach($professor as $itens){
+        foreach($professores as $ids){
+            $arr = explode("_", $ids);
+            Vinculo::where('disciplina_id', $arr[0])->forceDelete();
+            $obj_disciplina = Disciplina::find($arr[0]);
+            $obj_professor = Professor::find($arr[1]);
 
-            $array = explode('_',$itens);
+            if(!isset($obj_disciplina) || !isset($obj_professor)) { 
+                return "<h1>ID: id não encontrado!"; 
+            }
 
-            Vinculo::where('disciplina_id', $array[0])->forceDelete();
+            $obj = new Vinculo();
+            $obj->professor()->associate($obj_professor);
+            $obj->disciplina()->associate($obj_disciplina);
 
-            Vinculo::create([
-                'professor_id' => $array[1],
-                'disciplina_id' => $array[0]
-            ]);
+            $obj->save();
         }
 
-    
         return redirect()->route('vinculos.index');
     }
 
