@@ -39,22 +39,29 @@ class MatriculaController extends Controller
         $matriculas = $request->matriculas;
         $obj_aluno = Aluno::find($request->aluno);
         Matricula::where('aluno_id', $obj_aluno->id)->forceDelete();
+        
+        if($matriculas != null){
+            foreach($matriculas as $mat){
 
-        foreach($matriculas as $mat){
-
-            $obj_disciplina = Disciplina::find($mat);
-
-            if(!isset($obj_aluno) || !isset($obj_disciplina)) { 
-                return "<h1>id não encontrado!"; 
+                $obj_disciplina = Disciplina::find($mat);
+    
+                if(!isset($obj_aluno) || !isset($obj_disciplina)) { 
+                    return "<h1>id não encontrado!"; 
+                }
+    
+                $obj = new Matricula();
+                $obj->aluno()->associate($obj_aluno);
+                $obj->disciplina()->associate($obj_disciplina);
+                $obj->save();
             }
+    
+            return redirect()->route('alunos.index');
 
-            $obj = new Matricula();
-            $obj->aluno()->associate($obj_aluno);
-            $obj->disciplina()->associate($obj_disciplina);
-            $obj->save();
         }
-
-        return redirect()->route('alunos.index');
+        else{
+            return redirect()->route('alunos.index');
+        }
+        
     
     }
 
