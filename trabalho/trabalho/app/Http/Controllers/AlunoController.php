@@ -11,17 +11,31 @@ use App\Models\Aluno;
 class AlunoController extends Controller {
 
     public function index() {
+
+        if(!PermissionController::isAuthorized('alunos.index')){
+            abort(403);
+        }
+
+        $permissions = session('user_permissions');
         $dados = Aluno::with(['curso'])->get();
-        return view('alunos.index', compact(['dados']));
+        return view('alunos.index', compact(['dados', 'permissions']));
     }
 
     public function create() {
+
+        if(!PermissionController::isAuthorized('alunos.create')){
+            abort(403);
+        }
         
         $curso = Curso::all();
         return view('alunos.create', compact('curso'));
     }
 
     public function store(Request $request) {
+
+        if(!PermissionController::isAuthorized('alunos.store')){
+            abort(403);
+        }
 
         $valid = [
             'nome' => 'required|min:10|max:50',
@@ -51,6 +65,10 @@ class AlunoController extends Controller {
 
     public function show($id) {
 
+        if(!PermissionController::isAuthorized('alunos.show')){
+            abort(403);
+        }
+
         $dados[0] = Aluno::find($id);
 
         $dados[1]= Disciplina::where('curso_id', $dados[0]->curso_id)->get();
@@ -63,6 +81,10 @@ class AlunoController extends Controller {
  
     public function edit($id) {
 
+        if(!PermissionController::isAuthorized('alunos.edit')){
+            abort(403);
+        }
+
         $dados = Aluno::find($id);
         $curso = Curso::all();
 
@@ -74,6 +96,10 @@ class AlunoController extends Controller {
     }
 
     public function update (Request $request, $id) {
+
+        if(!PermissionController::isAuthorized('alunos.update')){
+            abort(403);
+        }
 
         $obj_aluno = Aluno::find($id);
 
@@ -109,6 +135,10 @@ class AlunoController extends Controller {
     }
 
     public function destroy($id) {
+
+        if(!PermissionController::isAuthorized('alunos.destroy')){
+            abort(403);
+        }
 
         Aluno::destroy($id);
 

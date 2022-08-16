@@ -15,8 +15,13 @@ class CursoController extends Controller
      */
     public function index()
     {
+        if(!PermissionController::isAuthorized('cursos.index')){
+            abort(403);
+        }
+
+        $permissions = session('user_permissions');
         $dados = Curso::with(['eixo'])->get();
-        return view('cursos.index', compact('dados'));
+        return view('cursos.index', compact('dados', 'permissions'));
     }
 
     /**
@@ -26,6 +31,10 @@ class CursoController extends Controller
      */
     public function create()
     {
+        if(!PermissionController::isAuthorized('cursos.create')){
+            abort(403);
+        }
+
         $dados = Eixo::all();
         return view('cursos.create', compact('dados'));
     }
@@ -38,6 +47,10 @@ class CursoController extends Controller
      */
     public function store(Request $request)
     {
+        if(!PermissionController::isAuthorized('cursos.store')){
+            abort(403);
+        }
+
         $valid = [
             'nome' => 'required|max:50|min:10',
             'sigla' => 'required|max:8|min:2',
@@ -76,7 +89,11 @@ class CursoController extends Controller
      */
     public function show($id)
     {
-        //
+        if(!PermissionController::isAuthorized('cursos.show')){
+            abort(403);
+        }
+
+        return view('cursos.show');
     }
 
     /**
@@ -87,6 +104,10 @@ class CursoController extends Controller
      */
     public function edit($id)
     {
+        if(!PermissionController::isAuthorized('cursos.edit')){
+            abort(403);
+        }
+
         $dados = Curso::find($id);
         $eixo = Eixo::all();
 
@@ -106,6 +127,10 @@ class CursoController extends Controller
      */
     public function update(Request $request, $id)
     {   
+        if(!PermissionController::isAuthorized('cursos.update')){
+            abort(403);
+        }
+
         $obj_curso = Curso::find($id);
 
         $valid = [
@@ -151,6 +176,10 @@ class CursoController extends Controller
      */
     public function destroy($id)
     {
+        if(!PermissionController::isAuthorized('cursos.destroy')){
+            abort(403);
+        }
+
         Curso::destroy($id);
         return redirect()->route('cursos.index');
     }

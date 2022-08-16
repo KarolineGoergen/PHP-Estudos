@@ -15,8 +15,13 @@ class DisciplinaController extends Controller
      */
     public function index()
     {
+        if(!PermissionController::isAuthorized('disciplinas.index')){
+            abort(403);
+        }
+
+        $permissions = session('user_permissions');
         $dados = Disciplina::with(['curso'])->get();
-        return view('disciplinas.index', compact(['dados']));
+        return view('disciplinas.index', compact(['dados', 'permissions']));
     }
 
     /**
@@ -26,6 +31,10 @@ class DisciplinaController extends Controller
      */
     public function create()
     {   
+        if(!PermissionController::isAuthorized('disciplinas.create')){
+            abort(403);
+        }
+
         $dados = Curso::all();
         return view('disciplinas.create', compact('dados'));
     }
@@ -38,6 +47,10 @@ class DisciplinaController extends Controller
      */
     public function store(Request $request)
     {
+        if(!PermissionController::isAuthorized('disciplinas.store')){
+            abort(403);
+        }
+
         $valid = [
             'nome' => 'required|max:100|min:10',
             'curso_id' => 'required',
@@ -75,7 +88,11 @@ class DisciplinaController extends Controller
      */
     public function show($id)
     {
-        //
+        if(!PermissionController::isAuthorized('disciplinas.show')){
+            abort(403);
+        }
+
+        return view('disciplinas.show');
     }
 
     /**
@@ -86,6 +103,11 @@ class DisciplinaController extends Controller
      */
     public function edit($id)
     {
+
+        if(!PermissionController::isAuthorized('disciplinas.edit')){
+            abort(403);
+        }
+
         $dados = Disciplina::find($id);
         $curso = Curso::all();
 
@@ -104,6 +126,10 @@ class DisciplinaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!PermissionController::isAuthorized('disciplinas.update')){
+            abort(403);
+        }
+
         $obj_disciplina = Disciplina::find($id);
 
         if(!isset($obj_disciplina)){
@@ -146,6 +172,10 @@ class DisciplinaController extends Controller
      */
     public function destroy($id)
     {
+        if(!PermissionController::isAuthorized('disciplinas.destroy')){
+            abort(403);
+        }
+
         Disciplina::destroy($id);
         return redirect()->route('disciplinas.index');
     }

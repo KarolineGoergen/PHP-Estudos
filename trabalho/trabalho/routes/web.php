@@ -13,14 +13,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('templates.main')->with('titulo', "");
-})->name('index');
 
-Route::resource('eixos', 'App\Http\Controllers\EixoController');
-Route::resource('cursos', 'App\Http\Controllers\CursoController');
-Route::resource('professores', 'App\Http\Controllers\ProfessorController');
-Route::resource('disciplinas', 'App\Http\Controllers\DisciplinaController');
-Route::resource('vinculos', 'App\Http\Controllers\VinculoController');
-Route::resource('alunos', 'App\Http\Controllers\AlunoController');
-Route::resource('matriculas', 'App\Http\Controllers\MatriculaController');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+Route::get('/testfacade', function () {
+    return UserPermissions::test();
+});
+
+Route::resource('/cursos', '\App\Http\Controllers\CursoController')
+    ->middleware(['auth']);
+
+Route::resource('/eixos', '\App\Http\Controllers\EixoController')
+    ->middleware(['auth']);
+
+Route::resource('/disciplinas', '\App\Http\Controllers\DisciplinaController')
+    ->middleware(['auth']);
+
+Route::resource('/alunos', '\App\Http\Controllers\AlunoController')
+    ->middleware(['auth']);
+
+Route::resource('/professores', '\App\Http\Controllers\ProfessorController')
+    ->middleware(['auth']);
+    
+require __DIR__.'/auth.php';
+

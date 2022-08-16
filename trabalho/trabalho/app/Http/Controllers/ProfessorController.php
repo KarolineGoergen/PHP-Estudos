@@ -14,9 +14,14 @@ class ProfessorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+        if(!PermissionController::isAuthorized('professores.index')){
+            abort(403);
+        }
+
+        $permissions = session('user_permissions');
         $dados = Professor::with('eixo')->get();
-        return view('professores.index', compact(['dados']));
+        return view('professores.index', compact(['dados', 'permissions']));
     }
 
     /**
@@ -26,6 +31,10 @@ class ProfessorController extends Controller
      */
     public function create()
     {
+        if(!PermissionController::isAuthorized('professores.create')){
+            abort(403);
+        }
+
         $dados = Eixo::all();
         return view('professores.create', compact('dados'));
     }
@@ -38,6 +47,10 @@ class ProfessorController extends Controller
      */
     public function store(Request $request)
     {
+        if(!PermissionController::isAuthorized('professores.store')){
+            abort(403);
+        }
+
         $valid = [
             'nome' => 'required|max:100|min:10',
             'email' => 'required|max:250|min:15|unique:professors',
@@ -80,7 +93,10 @@ class ProfessorController extends Controller
      */
     public function show($id)
     {
-        //
+        if(!PermissionController::isAuthorized('professores.show')){
+            abort(403);
+        }
+        return view('professores.show');
     }
 
     /**
@@ -91,6 +107,10 @@ class ProfessorController extends Controller
      */
     public function edit($id)
     {
+        if(!PermissionController::isAuthorized('professores.edit')){
+            abort(403);
+        }
+
         $dados = Professor::find($id);
         $eixo = Eixo::all();
 
@@ -109,6 +129,10 @@ class ProfessorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!PermissionController::isAuthorized('professores.update')){
+            abort(403);
+        }
+
         $obj_professor = Professor::find($id);
 
         $valid = [
@@ -157,6 +181,10 @@ class ProfessorController extends Controller
      */
     public function destroy($id)
     {
+        if(!PermissionController::isAuthorized('professores.destroy')){
+            abort(403);
+        }
+
         Professor::destroy($id);
         return redirect()->route('professores.index');
     }

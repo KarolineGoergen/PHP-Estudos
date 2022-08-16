@@ -14,8 +14,13 @@ class EixoController extends Controller
      */
     public function index()
     {
+        if(!PermissionController::isAuthorized('eixos.index')){
+            abort(403);
+        }
+
+        $permissions = session('user_permissions');
         $dados = Eixo::all();
-        return view('eixos.index', compact('dados'));
+        return view('eixos.index', compact('dados', 'permissions'));
     }
 
     /**
@@ -25,6 +30,10 @@ class EixoController extends Controller
      */
     public function create()
     {
+        if(!PermissionController::isAuthorized('eixos.create')){
+            abort(403);
+        }
+
         return view('eixos.create');
     }
 
@@ -36,6 +45,10 @@ class EixoController extends Controller
      */
     public function store(Request $request)
     {
+        if(!PermissionController::isAuthorized('eixos.store')){
+            abort(403);
+        }
+
         $valid = [
             'nome' => 'required|max:50|min:10',
         ];
@@ -63,7 +76,11 @@ class EixoController extends Controller
      */
     public function show($id)
     {
-        //
+        if(!PermissionController::isAuthorized('eixos.show')){
+            abort(403);
+        }
+
+        return view('eixos.show');
     }
 
     /**
@@ -74,6 +91,10 @@ class EixoController extends Controller
      */
     public function edit($id)
     {
+        if(!PermissionController::isAuthorized('eixos.edit')){
+            abort(403);
+        }
+
         $dados = Eixo::find($id);
 
         if(!isset($dados)){
@@ -91,6 +112,10 @@ class EixoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!PermissionController::isAuthorized('eixos.update')){
+            abort(403);
+        }
+
         $obj_eixo = Eixo::find($id);
 
         if(!isset($obj_eixo)){
@@ -123,6 +148,10 @@ class EixoController extends Controller
      */
     public function destroy($id)
     {
+        if(!PermissionController::isAuthorized('eixos.destroy')){
+            abort(403);
+        }
+
         Eixo::destroy($id);
         return redirect()->route('eixos.index');
     }
