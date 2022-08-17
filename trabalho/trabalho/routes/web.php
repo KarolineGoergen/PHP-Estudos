@@ -12,15 +12,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', function () {
+    return view('templates.main')->with('titulo', "");
+})->middleware(['auth']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/testfacade', function () {
-    return UserPermissions::test();
-});
+
 
 Route::resource('/cursos', '\App\Http\Controllers\CursoController')
     ->middleware(['auth']);
@@ -36,6 +36,11 @@ Route::resource('/alunos', '\App\Http\Controllers\AlunoController')
 
 Route::resource('/professores', '\App\Http\Controllers\ProfessorController')
     ->middleware(['auth']);
+
+Route::resource('/vinculos', '\App\Http\Controllers\VinculoController');
+Route::resource('/matriculas', '\App\Http\Controllers\MatriculaController');
+
+    
     
 require __DIR__.'/auth.php';
 

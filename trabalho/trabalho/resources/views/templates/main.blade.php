@@ -15,9 +15,8 @@
     <body>
         <nav class="navbar sticky-top navbar-expand-md  navbar-dark bg-primary">
             <div class="container-fluid">
-                <a href="{{route('index')}}" class="navbar-brand ms-sm-3">
                         <span class="ms-3 fs-5">IFPR</span>
-                </a>
+                
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#itens">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-menu-button-wide" viewBox="0 0 16 16">
                         <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v2A1.5 1.5 0 0 1 14.5 5h-13A1.5 1.5 0 0 1 0 3.5v-2zM1.5 1a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5h-13z"/>
@@ -41,7 +40,12 @@
                                 <li><a href="{{route('eixos.index')}}" class="dropdown-item">Eixos</a></li>
                                 <li><a href="{{route('vinculos.index')}}" class="dropdown-item">Vínculos</a></li>
                                 <li><a href="{{route('alunos.index')}}" class="dropdown-item">Alunos</a></li>
-                                
+                                <form method="POST" action="{{ route('logout') }}" id="form">
+                                @csrf  
+                                <a nohref style="cursor:pointer" class="dropdown-item" onclick="document.getElementById('form').submit()">  
+                                    Sair
+                                </a>
+                            </form> 
                             </ul>
                         </li>
                     </ul>
