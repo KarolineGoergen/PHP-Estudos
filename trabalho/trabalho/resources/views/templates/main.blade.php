@@ -40,6 +40,7 @@
                                 <li><a href="{{route('eixos.index')}}" class="dropdown-item">Eixos</a></li>
                                 <li><a href="{{route('vinculos.index')}}" class="dropdown-item">Vínculos</a></li>
                                 <li><a href="{{route('alunos.index')}}" class="dropdown-item">Alunos</a></li>
+                                <li><a href="{{route('matriculas.index')}}" class="dropdown-item">Matriculas</a></li>
                                 <form method="POST" action="{{ route('logout') }}" id="form">
                                 @csrf  
                                 <a nohref style="cursor:pointer" class="dropdown-item" onclick="document.getElementById('form').submit()">  

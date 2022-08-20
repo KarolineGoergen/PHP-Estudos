@@ -37,8 +37,11 @@ Route::resource('/alunos', '\App\Http\Controllers\AlunoController')
 Route::resource('/professores', '\App\Http\Controllers\ProfessorController')
     ->middleware(['auth']);
 
-Route::resource('/vinculos', '\App\Http\Controllers\VinculoController');
-Route::resource('/matriculas', '\App\Http\Controllers\MatriculaController');
+Route::resource('/vinculos', '\App\Http\Controllers\VinculoController')
+    ->middleware(['auth']);
+
+Route::resource('/matriculas', '\App\Http\Controllers\MatriculaController')
+    ->middleware(['auth']);
 
     
     
