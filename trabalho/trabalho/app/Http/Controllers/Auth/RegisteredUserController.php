@@ -23,8 +23,8 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        $types = Type::orderBy('nome')->get();
-        return view('auth.register', compact('types'));
+        $roles = Type::orderBy('nome')->get();
+        return view('auth.register', compact('roles'));
     }
 
     /**
@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'type_id' => $request->type_id,        
+            'role_id' => $request->role,        
             'password' => Hash::make($request->password),
         ]);
 
@@ -53,7 +53,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        UserPermissions::loadPermissions(Auth::user()->type_id);
+        UserPermissions::loadPermissions(Auth::user()->role_id);
 
         return redirect(RouteServiceProvider::HOME);
     }

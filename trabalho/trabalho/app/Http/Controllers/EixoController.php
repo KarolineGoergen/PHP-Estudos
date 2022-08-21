@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Eixo;
 
+
 class EixoController extends Controller
 {
     /**
@@ -14,9 +15,7 @@ class EixoController extends Controller
      */
     public function index()
     {
-        if(!PermissionController::isAuthorized('eixos.index')){
-            abort(403);
-        }
+        $this->authorized('viewAny', Eixo::class);
 
         $permissions = session('user_permissions');
         $dados = Eixo::all();
@@ -30,9 +29,8 @@ class EixoController extends Controller
      */
     public function create()
     {
-        if(!PermissionController::isAuthorized('eixos.create')){
-            abort(403);
-        }
+        $this->authorized('create', Eixo::class);
+
 
         return view('eixos.create');
     }
@@ -45,9 +43,8 @@ class EixoController extends Controller
      */
     public function store(Request $request)
     {
-        if(!PermissionController::isAuthorized('eixos.store')){
-            abort(403);
-        }
+        $this->authorized('create', Eixo::class);
+
 
         $valid = [
             'nome' => 'required|max:50|min:10',
@@ -76,9 +73,8 @@ class EixoController extends Controller
      */
     public function show($id)
     {
-        if(!PermissionController::isAuthorized('eixos.show')){
-            abort(403);
-        }
+        $this->authorized('view', Eixo::class);
+
 
         return view('eixos.show');
     }
@@ -91,9 +87,8 @@ class EixoController extends Controller
      */
     public function edit($id)
     {
-        if(!PermissionController::isAuthorized('eixos.edit')){
-            abort(403);
-        }
+        $this->authorized('update', Eixo::class);
+
 
         $dados = Eixo::find($id);
 
@@ -112,9 +107,8 @@ class EixoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(!PermissionController::isAuthorized('eixos.update')){
-            abort(403);
-        }
+        $this->authorized('update', Eixo::class);
+
 
         $obj_eixo = Eixo::find($id);
 
@@ -148,9 +142,8 @@ class EixoController extends Controller
      */
     public function destroy($id)
     {
-        if(!PermissionController::isAuthorized('eixos.destroy')){
-            abort(403);
-        }
+        $this->authorized('delete', Eixo::class);
+
 
         Eixo::destroy($id);
         return redirect()->route('eixos.index');
