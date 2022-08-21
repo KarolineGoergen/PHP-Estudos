@@ -12,9 +12,7 @@ class AlunoController extends Controller {
 
     public function index() {
 
-        if(!PermissionController::isAuthorized('alunos.index')){
-            abort(403);
-        }
+        $this->authorize('viewAny', Aluno::class);
 
         $permissions = session('user_permissions');
         $dados = Aluno::with(['curso'])->get();
@@ -23,9 +21,7 @@ class AlunoController extends Controller {
 
     public function create() {
 
-        if(!PermissionController::isAuthorized('alunos.create')){
-            abort(403);
-        }
+        $this->authorize('create', Aluno::class);
         
         $curso = Curso::all();
         return view('alunos.create', compact('curso'));
@@ -33,9 +29,7 @@ class AlunoController extends Controller {
 
     public function store(Request $request) {
 
-        if(!PermissionController::isAuthorized('alunos.store')){
-            abort(403);
-        }
+        $this->authorize('create', Aluno::class);
 
         $valid = [
             'nome' => 'required|min:10|max:50',
@@ -63,45 +57,39 @@ class AlunoController extends Controller {
         }
     }
 
-    public function show($id) {
+    public function show(Aluno $aluno) {
 
-        if(!PermissionController::isAuthorized('alunos.show')){
-            abort(403);
-        }
+        $this->authorize('view', Aluno::class);
 
-        $dados[0] = Aluno::find($id);
+        $dados[0] = Aluno::find($aluno->id);
 
         $dados[1]= Disciplina::where('curso_id', $dados[0]->curso_id)->get();
 
-        $dados[2] = Matricula::where('aluno_id', $id)->get();
+        $dados[2] = Matricula::where('aluno_id', $aluno->id)->get();
 
         return view('matriculas.index', compact('dados'));
     }
 
  
-    public function edit($id) {
+    public function edit(Aluno $aluno) {
 
-        if(!PermissionController::isAuthorized('alunos.edit')){
-            abort(403);
-        }
+        $this->authorize('update', Aluno::class);
 
-        $dados = Aluno::find($id);
+        $dados = Aluno::find($aluno->id);
         $curso = Curso::all();
 
         if(!isset($dados)) {
-            return "<h1> ID: $id não encontrado! </h1>";
+            return "<h1> ID: $aluno->id não encontrado! </h1>";
         }
 
         return view('alunos.edit', compact('dados', 'curso'));
     }
 
-    public function update (Request $request, $id) {
+    public function update (Request $request, Aluno $aluno) {
 
-        if(!PermissionController::isAuthorized('alunos.update')){
-            abort(403);
-        }
+        $this->authorize('update', Aluno::class);
 
-        $obj_aluno = Aluno::find($id);
+        $obj_aluno = Aluno::find($aluno->id);
 
 
         $valid = [
@@ -118,7 +106,7 @@ class AlunoController extends Controller {
         $request->validate($valid, $msg);
 
         if(!isset($obj_aluno)) { 
-            return "<h1>ID: $id não encontrado! </h1>"; 
+            return "<h1>ID: $aluno->id não encontrado! </h1>"; 
         }
 
         $obj_curso = Curso::find($request->curso_id);
@@ -134,13 +122,11 @@ class AlunoController extends Controller {
         return redirect()->route('alunos.index');
     }
 
-    public function destroy($id) {
+    public function destroy(Aluno $aluno) {
 
-        if(!PermissionController::isAuthorized('alunos.destroy')){
-            abort(403);
-        }
+        $this->authorize('delete', Aluno::class);
 
-        Aluno::destroy($id);
+        Aluno::destroy($aluno->id);
 
         return redirect()->route('alunos.index');
     }

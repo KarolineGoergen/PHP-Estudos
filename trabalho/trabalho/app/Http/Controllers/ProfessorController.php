@@ -15,9 +15,7 @@ class ProfessorController extends Controller
      */
     public function index()
     {   
-        if(!PermissionController::isAuthorized('professores.index')){
-            abort(403);
-        }
+        $this->authorize('viewAny', Professor::class);
 
         $permissions = session('user_permissions');
         $dados = Professor::with('eixo')->get();
@@ -31,9 +29,7 @@ class ProfessorController extends Controller
      */
     public function create()
     {
-        if(!PermissionController::isAuthorized('professores.create')){
-            abort(403);
-        }
+        $this->authorize('create', Professor::class);
 
         $dados = Eixo::all();
         return view('professores.create', compact('dados'));
@@ -47,9 +43,8 @@ class ProfessorController extends Controller
      */
     public function store(Request $request)
     {
-        if(!PermissionController::isAuthorized('professores.store')){
-            abort(403);
-        }
+        $this->authorize('create', Professor::class);
+
 
         $valid = [
             'nome' => 'required|max:100|min:10',
@@ -91,12 +86,10 @@ class ProfessorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Professor $professor)
     {
-        if(!PermissionController::isAuthorized('professores.show')){
-            abort(403);
-        }
-        return view('professores.show');
+        $this->authorize('view', Professor::class);
+
     }
 
     /**
@@ -105,17 +98,15 @@ class ProfessorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Professor $professor)
     {
-        if(!PermissionController::isAuthorized('professores.edit')){
-            abort(403);
-        }
+        $this->authorize('update', Professor::class);
 
-        $dados = Professor::find($id);
+        $dados = Professor::find($professor->id);
         $eixo = Eixo::all();
 
         if(!isset($dados)){
-            return "<h1>O Professor $id não existe!</h1>";
+            return "<h1>O Professor $professor->id não existe!</h1>";
         }
         return view('professores.edit', compact('dados','eixo'));
     }
@@ -127,13 +118,12 @@ class ProfessorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Professor $professor)
     {
-        if(!PermissionController::isAuthorized('professores.update')){
-            abort(403);
-        }
+        $this->authorize('update', Professor::class);
 
-        $obj_professor = Professor::find($id);
+
+        $obj_professor = Professor::find($professor->id);
 
         $valid = [
             'nome' => 'required|max:100|min:10',
@@ -154,7 +144,7 @@ class ProfessorController extends Controller
         $request->validate($valid, $msg);
 
         if(!isset($obj_professor)){
-            return "<h1>O Professor $id não existe!</h1>";
+            return "<h1>O Professor $professor->id não existe!</h1>";
         }
 
         $obj_eixo = Eixo::find($request->eixo_id);
@@ -179,13 +169,12 @@ class ProfessorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Professor $professor)
     {
-        if(!PermissionController::isAuthorized('professores.destroy')){
-            abort(403);
-        }
+        $this->authorize('delete', Professor::class);
 
-        Professor::destroy($id);
+
+        Professor::destroy($professor->id);
         return redirect()->route('professores.index');
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 use App\Facades\UserPermissions;
-use App\Models\Eixo;
+use App\Models\Disciplina;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class EixoPolicy
+class DisciplinaPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,21 @@ class EixoPolicy
      */
     public function viewAny(User $user)
     {
-        return UserPermissions::isAuthorized('eixos.index');
+        return UserPermissions::isAuthorized('disciplinas.index');
+
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Eixo  $eixo
+     * @param  \App\Models\Disciplina  $disciplina
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Eixo $eixo)
+    public function view(User $user, Disciplina $disciplina)
     {
-        return UserPermissions::isAuthorized('eixos.show');
+        return UserPermissions::isAuthorized('disciplinas.show');
+
     }
 
     /**
@@ -41,41 +43,44 @@ class EixoPolicy
      */
     public function create(User $user)
     {
-        return UserPermissions::isAuthorized('eixos.create');
+        return UserPermissions::isAuthorized('disciplinas.create');
+
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Eixo  $eixo
+     * @param  \App\Models\Disciplina  $disciplina
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Eixo $eixo)
+    public function update(User $user, Disciplina $disciplina)
     {
-        return UserPermissions::isAuthorized('eixos.edit');
+        return UserPermissions::isAuthorized('disciplinas.edit');
+
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Eixo  $eixo
+     * @param  \App\Models\Disciplina  $disciplina
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Eixo $eixo)
+    public function delete(User $user, Disciplina $disciplina)
     {
-        return UserPermissions::isAuthorized('eixos.destroy');
+        return UserPermissions::isAuthorized('disciplinas.destroy');
+
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Eixo  $eixo
+     * @param  \App\Models\Disciplina  $disciplina
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Eixo $eixo)
+    public function restore(User $user, Disciplina $disciplina)
     {
         //
     }
@@ -84,10 +89,10 @@ class EixoPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Eixo  $eixo
+     * @param  \App\Models\Disciplina  $disciplina
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Eixo $eixo)
+    public function forceDelete(User $user, Disciplina $disciplina)
     {
         //
     }

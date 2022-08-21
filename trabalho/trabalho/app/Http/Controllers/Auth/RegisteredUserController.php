@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Type;
+use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -23,7 +23,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        $roles = Type::orderBy('nome')->get();
+        $roles = Role::orderBy('name')->get();
         return view('auth.register', compact('roles'));
     }
 

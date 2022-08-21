@@ -15,7 +15,7 @@ class EixoController extends Controller
      */
     public function index()
     {
-        $this->authorized('viewAny', Eixo::class);
+        $this->authorize('viewAny', Eixo::class);
 
         $permissions = session('user_permissions');
         $dados = Eixo::all();
@@ -29,7 +29,7 @@ class EixoController extends Controller
      */
     public function create()
     {
-        $this->authorized('create', Eixo::class);
+        $this->authorize('create', Eixo::class);
 
 
         return view('eixos.create');
@@ -43,7 +43,7 @@ class EixoController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorized('create', Eixo::class);
+        $this->authorize('create', Eixo::class);
 
 
         $valid = [
@@ -71,9 +71,9 @@ class EixoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Eixo $eixo)
     {
-        $this->authorized('view', Eixo::class);
+        $this->authorize('view', $eixo);
 
 
         return view('eixos.show');
@@ -85,15 +85,15 @@ class EixoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Eixo $eixo)
     {
-        $this->authorized('update', Eixo::class);
+        $this->authorize('update', $eixo);
 
 
-        $dados = Eixo::find($id);
+        $dados = Eixo::find($eixo->id);
 
         if(!isset($dados)){
-            return "<h1>Eixo $id não existe!</h1>";
+            return "<h1>Eixo $eixo->id não existe!</h1>";
         }
         return view('eixos.edit', compact('dados'));
     }
@@ -105,15 +105,15 @@ class EixoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Eixo $eixo)
     {
-        $this->authorized('update', Eixo::class);
+        $this->authorize('update', $eixo);
 
 
-        $obj_eixo = Eixo::find($id);
+        $obj_eixo = Eixo::find($eixo->id);
 
         if(!isset($obj_eixo)){
-            return "<h1>Eixo $id não existe!</h1>";
+            return "<h1>Eixo $eixo->id não existe!</h1>";
         }
 
         $valid = [
@@ -140,12 +140,12 @@ class EixoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Eixo $eixo)
     {
-        $this->authorized('delete', Eixo::class);
+        $this->authorize('delete', $eixo);
 
 
-        Eixo::destroy($id);
+        Eixo::destroy($eixo->id);
         return redirect()->route('eixos.index');
     }
 }

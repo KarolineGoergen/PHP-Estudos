@@ -15,9 +15,7 @@ class DisciplinaController extends Controller
      */
     public function index()
     {
-        if(!PermissionController::isAuthorized('disciplinas.index')){
-            abort(403);
-        }
+        $this->authorize('viewAny', Disciplina::class);
 
         $permissions = session('user_permissions');
         $dados = Disciplina::with(['curso'])->get();
@@ -31,9 +29,8 @@ class DisciplinaController extends Controller
      */
     public function create()
     {   
-        if(!PermissionController::isAuthorized('disciplinas.create')){
-            abort(403);
-        }
+        $this->authorize('create', Disciplina::class);
+
 
         $dados = Curso::all();
         return view('disciplinas.create', compact('dados'));
@@ -47,9 +44,8 @@ class DisciplinaController extends Controller
      */
     public function store(Request $request)
     {
-        if(!PermissionController::isAuthorized('disciplinas.store')){
-            abort(403);
-        }
+        $this->authorize('create', Disciplina::class);
+
 
         $valid = [
             'nome' => 'required|max:100|min:10',
@@ -86,11 +82,10 @@ class DisciplinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Disciplina $disciplina)
     {
-        if(!PermissionController::isAuthorized('disciplinas.show')){
-            abort(403);
-        }
+        $this->authorize('view', Disciplina::class);
+
 
         return view('disciplinas.show');
     }
@@ -101,18 +96,17 @@ class DisciplinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Disciplina $disciplina)
     {
 
-        if(!PermissionController::isAuthorized('disciplinas.edit')){
-            abort(403);
-        }
+        $this->authorize('update', Disciplina::class);
 
-        $dados = Disciplina::find($id);
+
+        $dados = Disciplina::find($disciplina->id);
         $curso = Curso::all();
 
         if(!isset($dados)){
-            return "<h1>Disciplina $id não existe!</h1>";
+            return "<h1>Disciplina $disciplina->id não existe!</h1>";
         }
         return view('disciplinas.edit', compact('dados','curso'));
     }
@@ -124,16 +118,15 @@ class DisciplinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Disciplina $disciplina)
     {
-        if(!PermissionController::isAuthorized('disciplinas.update')){
-            abort(403);
-        }
+        $this->authorize('update', Disciplina::class);
 
-        $obj_disciplina = Disciplina::find($id);
+
+        $obj_disciplina = Disciplina::find($disciplina->id);
 
         if(!isset($obj_disciplina)){
-            return "<h1>Curso $id não existe!</h1>";
+            return "<h1>Curso $disciplina->d não existe!</h1>";
         }
 
         $valid = [
@@ -170,13 +163,12 @@ class DisciplinaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Disciplina $disciplina)
     {
-        if(!PermissionController::isAuthorized('disciplinas.destroy')){
-            abort(403);
-        }
+        $this->authorize('delete', Disciplina::class);
 
-        Disciplina::destroy($id);
+
+        Disciplina::destroy($disciplina->id);
         return redirect()->route('disciplinas.index');
     }
 }
