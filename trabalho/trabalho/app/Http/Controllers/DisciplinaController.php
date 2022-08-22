@@ -84,7 +84,7 @@ class DisciplinaController extends Controller
      */
     public function show(Disciplina $disciplina)
     {
-        $this->authorize('view', Disciplina::class);
+        $this->authorize('view', $disciplina);
 
 
         return view('disciplinas.show');
@@ -99,7 +99,7 @@ class DisciplinaController extends Controller
     public function edit(Disciplina $disciplina)
     {
 
-        $this->authorize('update', Disciplina::class);
+        $this->authorize('update', $disciplina);
 
 
         $dados = Disciplina::find($disciplina->id);
@@ -120,7 +120,7 @@ class DisciplinaController extends Controller
      */
     public function update(Request $request, Disciplina $disciplina)
     {
-        $this->authorize('update', Disciplina::class);
+        $this->authorize('update', $disciplina);
 
 
         $obj_disciplina = Disciplina::find($disciplina->id);
@@ -165,7 +165,7 @@ class DisciplinaController extends Controller
      */
     public function destroy(Disciplina $disciplina)
     {
-        $this->authorize('delete', Disciplina::class);
+        $this->authorize('delete', $disciplina);
 
 
         Disciplina::destroy($disciplina->id);

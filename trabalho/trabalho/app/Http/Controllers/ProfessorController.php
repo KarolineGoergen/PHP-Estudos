@@ -88,7 +88,7 @@ class ProfessorController extends Controller
      */
     public function show(Professor $professor)
     {
-        $this->authorize('view', Professor::class);
+        $this->authorize('view', $professor);
 
     }
 
@@ -100,7 +100,7 @@ class ProfessorController extends Controller
      */
     public function edit(Professor $professor)
     {
-        $this->authorize('update', Professor::class);
+        $this->authorize('update', $professor);
 
         $dados = Professor::find($professor->id);
         $eixo = Eixo::all();
@@ -120,7 +120,7 @@ class ProfessorController extends Controller
      */
     public function update(Request $request, Professor $professor)
     {
-        $this->authorize('update', Professor::class);
+        $this->authorize('update', $professor);
 
 
         $obj_professor = Professor::find($professor->id);
@@ -171,7 +171,7 @@ class ProfessorController extends Controller
      */
     public function destroy(Professor $professor)
     {
-        $this->authorize('delete', Professor::class);
+        $this->authorize('delete', $professor);
 
 
         Professor::destroy($professor->id);

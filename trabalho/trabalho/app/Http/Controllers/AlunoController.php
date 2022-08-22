@@ -59,7 +59,7 @@ class AlunoController extends Controller {
 
     public function show(Aluno $aluno) {
 
-        $this->authorize('view', Aluno::class);
+        $this->authorize('view', $aluno);
 
         $dados[0] = Aluno::find($aluno->id);
 
@@ -73,7 +73,7 @@ class AlunoController extends Controller {
  
     public function edit(Aluno $aluno) {
 
-        $this->authorize('update', Aluno::class);
+        $this->authorize('update', $aluno);
 
         $dados = Aluno::find($aluno->id);
         $curso = Curso::all();
@@ -87,7 +87,7 @@ class AlunoController extends Controller {
 
     public function update (Request $request, Aluno $aluno) {
 
-        $this->authorize('update', Aluno::class);
+        $this->authorize('update', $aluno);
 
         $obj_aluno = Aluno::find($aluno->id);
 
@@ -124,7 +124,7 @@ class AlunoController extends Controller {
 
     public function destroy(Aluno $aluno) {
 
-        $this->authorize('delete', Aluno::class);
+        $this->authorize('delete', $aluno);
 
         Aluno::destroy($aluno->id);
 

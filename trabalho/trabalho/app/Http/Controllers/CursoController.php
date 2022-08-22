@@ -83,7 +83,7 @@ class CursoController extends Controller
      */
     public function show(Curso $curso)
     {
-        $this->authorize('view', Curso::class);
+        $this->authorize('view', $curso);
 
         return view('cursos.show');
     }
@@ -96,7 +96,7 @@ class CursoController extends Controller
      */
     public function edit(Curso $curso)
     {
-        $this->authorize('update', Curso::class);
+        $this->authorize('update', $curso);
 
         $dados = Curso::find($curso->id);
         $eixo = Eixo::all();
@@ -117,7 +117,7 @@ class CursoController extends Controller
      */
     public function update(Request $request, Curso $curso)
     {   
-        $this->authorize('update', Curso::class);
+        $this->authorize('update', $curso);
 
         $obj_curso = Curso::find($curso->id);
 
@@ -164,7 +164,7 @@ class CursoController extends Controller
      */
     public function destroy(Curso $curso)
     {
-        $this->authorize('delete', Curso::class);
+        $this->authorize('delete', $curso);
 
         Curso::destroy($curso->id);
         return redirect()->route('cursos.index');
