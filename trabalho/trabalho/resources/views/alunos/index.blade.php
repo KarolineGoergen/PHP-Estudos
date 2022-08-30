@@ -1,4 +1,4 @@
-@extends('templates.main', ['titulo' => "Alunos", 'rota' => "alunos.create"])
+@extends('templates.main', ['titulo' => "Alunos", 'rota' => "alunos.create", 'permission' => "App/Models/Aluno"])
 @section('titulo') Aluno @endsection
 @section('conteudo')
 

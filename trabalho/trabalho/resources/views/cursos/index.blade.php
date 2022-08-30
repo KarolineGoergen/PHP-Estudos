@@ -1,4 +1,4 @@
-@extends('templates.main', ['titulo' => "Cursos", 'rota' => "cursos.create"])
+@extends('templates.main', ['titulo' => "Cursos", 'rota' => "cursos.create", 'permission' => "App/Models/Curso"])
 @section('titulo') Cursos @endsection
 @section('conteudo')
 
