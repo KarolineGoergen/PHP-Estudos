@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Policies;
-
+use App\Facades\UserPermissions;
 use App\Models\Produto;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -18,7 +18,8 @@ class ProdutoPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return UserPermissions::isAuthorized('produtos.index');
+
     }
 
     /**
@@ -30,7 +31,8 @@ class ProdutoPolicy
      */
     public function view(User $user, Produto $produto)
     {
-        //
+        return UserPermissions::isAuthorized('produtos.show');
+
     }
 
     /**
@@ -41,7 +43,8 @@ class ProdutoPolicy
      */
     public function create(User $user)
     {
-        //
+        return UserPermissions::isAuthorized('produtos.create');
+
     }
 
     /**
@@ -53,7 +56,8 @@ class ProdutoPolicy
      */
     public function update(User $user, Produto $produto)
     {
-        //
+        return UserPermissions::isAuthorized('produtos.edit');
+
     }
 
     /**
@@ -65,7 +69,8 @@ class ProdutoPolicy
      */
     public function delete(User $user, Produto $produto)
     {
-        //
+        return UserPermissions::isAuthorized('produtos.destroy');
+
     }
 
     /**

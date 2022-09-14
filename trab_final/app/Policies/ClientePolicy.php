@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Policies;
+use App\Facades\UserPermissions;
 
 use App\Models\Cliente;
 use App\Models\User;
@@ -18,7 +19,7 @@ class ClientePolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return UserPermissions::isAuthorized('clientes.index');
     }
 
     /**
@@ -30,7 +31,8 @@ class ClientePolicy
      */
     public function view(User $user, Cliente $cliente)
     {
-        //
+        return UserPermissions::isAuthorized('clientes.show');
+
     }
 
     /**
@@ -41,7 +43,8 @@ class ClientePolicy
      */
     public function create(User $user)
     {
-        //
+        return UserPermissions::isAuthorized('clientes.create');
+
     }
 
     /**
@@ -53,7 +56,8 @@ class ClientePolicy
      */
     public function update(User $user, Cliente $cliente)
     {
-        //
+        return UserPermissions::isAuthorized('clientes.edit');
+
     }
 
     /**
@@ -65,7 +69,8 @@ class ClientePolicy
      */
     public function delete(User $user, Cliente $cliente)
     {
-        //
+        return UserPermissions::isAuthorized('clientes.destroy');
+
     }
 
     /**

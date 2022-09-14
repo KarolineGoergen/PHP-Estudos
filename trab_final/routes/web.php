@@ -14,11 +14,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('templates.main')->with('titulo', "");
+})->middleware(['auth']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::resource('/clientes', '\App\Http\Controllers\ClienteController')
+    ->middleware(['auth']);
+
+Route::resource('/produtos', '\App\Http\Controllers\ProdutoController')
+    ->middleware(['auth']);
+
+Route::resource('/empresas', '\App\Http\Controllers\EmpresaController')
+    ->middleware(['auth']);
 
 require __DIR__.'/auth.php';

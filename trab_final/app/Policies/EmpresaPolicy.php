@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Policies;
-
+use App\Facades\UserPermissions;
 use App\Models\Empresa;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -18,7 +18,8 @@ class EmpresaPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return UserPermissions::isAuthorized('empresas.index');
+
     }
 
     /**
@@ -30,7 +31,8 @@ class EmpresaPolicy
      */
     public function view(User $user, Empresa $empresa)
     {
-        //
+        return UserPermissions::isAuthorized('empresas.show');
+
     }
 
     /**
@@ -41,7 +43,8 @@ class EmpresaPolicy
      */
     public function create(User $user)
     {
-        //
+        return UserPermissions::isAuthorized('empresas.create');
+
     }
 
     /**
@@ -53,7 +56,8 @@ class EmpresaPolicy
      */
     public function update(User $user, Empresa $empresa)
     {
-        //
+        return UserPermissions::isAuthorized('empresas.edit');
+
     }
 
     /**
@@ -65,7 +69,8 @@ class EmpresaPolicy
      */
     public function delete(User $user, Empresa $empresa)
     {
-        //
+        return UserPermissions::isAuthorized('empresas.destroy');
+
     }
 
     /**
