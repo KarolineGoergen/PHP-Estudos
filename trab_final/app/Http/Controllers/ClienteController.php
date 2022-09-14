@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -13,7 +13,11 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('viewAny', Cliente::class);
+
+        $permissions = session('user_permissions');
+        $dados = Cliente::all();
+        return view('clientes.index', compact('dados', 'permissions'));
     }
 
     /**
@@ -23,7 +27,9 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create', Cliente::class);
+
+        return view('clientes.create');
     }
 
     /**
@@ -34,7 +40,15 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Cliente::class);
+
+        $obj_cliente = new Cliente();
+        $obj_cliente->nome = mb_strtoupper($request->nome, 'UTF-8');
+        $obj_cliente->email = mb_strtoupper($request->nome, 'UTF-8');
+        $obj_cliente->telefone = $request->telefone;
+        $obj_cliente->save();
+
+        return redirect()->route('clientes.index');
     }
 
     /**
@@ -43,9 +57,11 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Cliente $cliente)
     {
-        //
+        $this->authorize('view', $cliente);
+
+        return view('clientes.show');
     }
 
     /**
@@ -54,9 +70,17 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Cliente $cliente)
     {
-        //
+        $this->authorize('update', $cliente);
+
+
+        $dados = Cliente::find($cliente->id);
+
+        if(!isset($dados)){
+            return "<h1>Cliente $cliente->id não existe!</h1>";
+        }
+        return view('clientes.edit', compact('dados'));
     }
 
     /**
@@ -66,9 +90,23 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Cliente $cliente )
     {
-        //
+        $this->authorize('update', $cliente);
+
+
+        $obj_cliente = Cliente::find($cliente->id);
+
+        if(!isset($obj_cliente)){
+            return "<h1>Cliente $cliente->id não existe!</h1>";
+        }
+
+        $obj_cliente->nome = mb_strtoupper($request->nome, 'UTF-8');
+        $obj_cliente->email = mb_strtoupper($request->nome, 'UTF-8');
+        $obj_cliente->telefone = $request->telefone;
+        $obj_cliente->save();
+
+        return redirect()->route('clientes.index');
     }
 
     /**
@@ -77,8 +115,11 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Cliente $cliente)
     {
-        //
+        $this->authorize('delete', $cliente);
+
+        Cliente::destroy($cliente->id);
+        return redirect()->route('clientes.index');
     }
 }

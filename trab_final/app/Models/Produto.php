@@ -9,7 +9,7 @@ class Produto extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome', 'descricao', 'valor'];
+    protected $fillable = ['nome', 'descricao', 'valor', 'empresa_id'];
 
     public function empresa() {
         return $this->belongsTo('App\Models\Empresa');

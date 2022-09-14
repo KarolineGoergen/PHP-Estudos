@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Produto;
+use App\Models\Empresa;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
@@ -13,7 +14,11 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('viewAny', Produto::class);
+
+        $permissions = session('user_permissions');
+        $dados = Produto::with('empresa')->get();
+        return view('produtos.index', compact(['dados', 'permissions']));
     }
 
     /**
@@ -23,7 +28,10 @@ class ProdutoController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create', Produto::class);
+
+        $dados = Empresa::all();
+        return view('produtos.create', compact('dados'));
     }
 
     /**
@@ -34,7 +42,20 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Produto::class);
+
+        $obj_empresa = Empresa::find($request->empresa_id);
+        if(isset($obj_empresa)){
+
+            $obj_produto = new Produto();
+            $obj_produto->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $obj_produto->descricao = mb_strtoupper($request->descricao, 'UTF-8');
+            $obj_produto->valor = $request->valor;
+            $obj_produto->empresa()->associate($obj_empresa);
+            $obj_produto->save();
+
+            return redirect()->route('produtos.index');
+        }
     }
 
     /**
@@ -43,9 +64,9 @@ class ProdutoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Produto $produto)
     {
-        //
+        $this->authorize('view', $produto);
     }
 
     /**
@@ -54,9 +75,17 @@ class ProdutoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Produto $produto)
     {
-        //
+        $this->authorize('update', $produto);
+
+        $dados = Produto::find($produto->id);
+        $empresa = Empresa::all();
+
+        if(!isset($dados)){
+            return "<h1>O Produto $produto->id não existe!</h1>";
+        }
+        return view('produtos.edit', compact('dados','empresa'));
     }
 
     /**
@@ -66,9 +95,23 @@ class ProdutoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Produto $produto)
     {
-        //
+        $this->authorize('update', $produto);
+
+        $obj_empresa = Empresa::find($request->empresa_id);
+        $obj_produto = Produto::find($produto->id);
+
+        if(isset($obj_empresa)){
+
+            $obj_produto->nome = mb_strtoupper($request->nome, 'UTF-8');
+            $obj_produto->descricao = mb_strtoupper($request->descricao, 'UTF-8');
+            $obj_produto->valor = $request->valor;
+            $obj_produto->empresa()->associate($obj_empresa);
+            $obj_produto->save();
+
+            return redirect()->route('produtos.index');
+        }
     }
 
     /**
@@ -77,8 +120,11 @@ class ProdutoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Produto $produto)
     {
-        //
+        $this->authorize('delete', $produto);
+
+        Produto::destroy($produto->id);
+        return redirect()->route('produtos.index');
     }
 }
