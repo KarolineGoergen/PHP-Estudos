@@ -13,9 +13,10 @@
 
     </head>
     <body>
-        <nav class="navbar sticky-top navbar-expand-md  navbar-dark bg-primary">
+        <nav class="navbar sticky-top navbar-expand-md  navbar-dark bg-dark">
             <div class="container-fluid">
-                        <span class="ms-3 fs-5">Agenda do Vendedor</span>
+            <span class="ms-3 fs-5" style="color: White;"><b>AGENDA DO VENDEDOR</b> | Bem-vindo {{ Auth::user()->name }} </span>
+
                 
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#itens">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-menu-button-wide" viewBox="0 0 16 16">
@@ -48,11 +49,13 @@
                 </div>
             </div>
         </nav>
+        
         <div class="container py-4">
             <div class="row">
                 <div class="col">
                     <h3 class="display-7 text-secondary d-none d-md-block"><b>{{ $titulo }}</b></h3>
                 </div>
+
                 @if(isset($rota))
                 @can('create', $permission)
                     <div class="col d-flex justify-content-end">
@@ -66,7 +69,13 @@
                 @endif
             </div>
             <hr>
-            @yield('conteudo')
+            @if(!$__env->yieldContent('conteudo'))
+            <div>
+                <img src="https://static.vecteezy.com/ti/vetor-gratis/p1/2857523-agenda-book-isolated-cartoon-illustration-in-outline-flat-style-vetor.jpg">
+            </div>            
+            @else
+                @yield('conteudo')
+            @endif
         </div>
     </body>
 
