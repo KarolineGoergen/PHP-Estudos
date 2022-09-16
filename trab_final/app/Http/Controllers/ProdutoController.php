@@ -44,6 +44,19 @@ class ProdutoController extends Controller
     {
         $this->authorize('create', Produto::class);
 
+        $valid = [
+            'nome' => 'required',
+            'valor' => 'required',
+            'empresa_id' => 'required',
+
+        ];
+
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+        ];
+
+        $request->validate($valid, $msg);
+
         $obj_empresa = Empresa::find($request->empresa_id);
         if(isset($obj_empresa)){
 
@@ -98,6 +111,19 @@ class ProdutoController extends Controller
     public function update(Request $request, Produto $produto)
     {
         $this->authorize('update', $produto);
+
+        $valid = [
+            'nome' => 'required',
+            'valor' => 'required',
+            'empresa_id' => 'required',
+
+        ];
+
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+        ];
+
+        $request->validate($valid, $msg);
 
         $obj_empresa = Empresa::find($request->empresa_id);
         $obj_produto = Produto::find($produto->id);

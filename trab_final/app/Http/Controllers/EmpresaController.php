@@ -42,6 +42,22 @@ class EmpresaController extends Controller
     {
         $this->authorize('create', Empresa::class);
 
+        
+        $valid = [
+            'nome' => 'required',
+            'telefone' => 'required|max:11|min:11',
+            'cod' => 'required|max:20|min:14',
+
+        ];
+
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+            "min" => "O [:attribute] deve conter no mínimo [:min]",
+            "max" => "O [:attribute] deve conter no máximo [:max]",
+        ];
+
+        $request->validate($valid, $msg);
+
         $obj_empresa = new Empresa();
         $obj_empresa->nome = mb_strtoupper($request->nome, 'UTF-8');
         $obj_empresa->descricao = mb_strtoupper($request->descricao, 'UTF-8');
@@ -95,7 +111,21 @@ class EmpresaController extends Controller
     {
         $this->authorize('update', $empresa);
 
+        $valid = [
+            'nome' => 'required',
+            'telefone' => 'required|max:11|min:11',
+            'cod' => 'required|max:20|min:14',
 
+        ];
+
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+            "min" => "O [:attribute] deve conter no mínimo [:min]",
+            "max" => "O [:attribute] deve conter no máximo [:max]",
+        ];
+
+        $request->validate($valid, $msg);
+        
         $obj_empresa = Empresa::find($empresa->id);
 
         if(!isset($obj_empresa)){

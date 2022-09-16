@@ -42,6 +42,21 @@ class ClienteController extends Controller
     {
         $this->authorize('create', Cliente::class);
 
+        $valid = [
+            'nome' => 'required',
+            'email' => 'required',
+            'telefone' => 'required|max:20|min:11',
+
+        ];
+
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+            "min" => "O [:attribute] deve conter no mínimo [:min]",
+            "max" => "O [:attribute] deve conter no máximo [:max]",
+        ];
+
+        $request->validate($valid, $msg);
+
         $obj_cliente = new Cliente();
         $obj_cliente->nome = mb_strtoupper($request->nome, 'UTF-8');
         $obj_cliente->email = mb_strtoupper($request->nome, 'UTF-8');
@@ -94,6 +109,21 @@ class ClienteController extends Controller
     {
         $this->authorize('update', $cliente);
 
+        
+        $valid = [
+            'nome' => 'required',
+            'email' => 'required',
+            'telefone' => 'required|max:20|min:11',
+
+        ];
+
+        $msg = [
+            "required" => "O campo [:attribute] é obrigatório",
+            "min" => "O [:attribute] deve conter no mínimo [:min]",
+            "max" => "O [:attribute] deve conter no máximo [:max]",
+        ];
+
+        $request->validate($valid, $msg);
 
         $obj_cliente = Cliente::find($cliente->id);
 
