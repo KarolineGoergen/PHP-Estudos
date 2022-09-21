@@ -17,7 +17,8 @@ class RegistrationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_new_users_can_register()
+    //testa se as informções são validas para criar um novo usuario
+    public function test_registro_novo_usuario()
     {
         $response = $this->post('/register', [
             'name' => 'Test User',

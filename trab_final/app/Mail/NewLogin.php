@@ -31,6 +31,6 @@ class NewLogin extends Mailable
         return $this->view('mail.new-login')->with([
         'user' => $this->user,
         'data' => now()->setTimezone('America/Sao_Paulo')->format('d-m-Y H:i:s')
-        ]);
+        ])->attach(base_path().'/storage/files/ebook.pdf');
         }
 }
